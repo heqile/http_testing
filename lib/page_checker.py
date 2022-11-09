@@ -48,7 +48,7 @@ class PageChecker:
         )
         if should_find:
             should_find_assertions = Assertions(**should_find)
-            assert should_find_assertions.check_assertions(response=response)
+            should_find_assertions.check_assertions(response=response)
         if should_not_find:
             should_not_find_assertions = Assertions(**should_not_find)
-            assert should_not_find_assertions.check_assertions(response=response, negative=True)
+            should_not_find_assertions.check_assertions(response=response, negative=True)
