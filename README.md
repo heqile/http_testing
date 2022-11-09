@@ -17,7 +17,7 @@ then access the account page to verify some values. Of course, we can have sever
 ```python
 # test_example.py
 
-schema = "https"
+scheme = "https"
 host = "example.com"
 port = 80
 
