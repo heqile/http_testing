@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "http-testing"
+version = "0.1.0"
+description = "http_testing framework"
+authors = ["HE Qile <mr.qile@gmail.com>"]
+readme = "README.md"
+packages = [{include = "http_testing"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pytest = "^7.2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
