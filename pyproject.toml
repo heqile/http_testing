@@ -9,6 +9,7 @@ packages = [{include = "http_testing"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 pytest = "^7.2.0"
+httpx = "^0.23.0"
 
 
 [tool.poetry.group.dev.dependencies]
