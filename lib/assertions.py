@@ -24,7 +24,7 @@ class Assertions:
                 ) ^ negative:
                     msg = (
                         f"'{header_key}':'{header_value}'{'' if negative else ' not'} "
-                        "found in headers on page '{response.url}'"
+                        f"found in headers on page '{response.url}'"
                     )
                     raise AssertionError(msg)
         if self.cookies:
@@ -34,6 +34,6 @@ class Assertions:
                 ) ^ negative:
                     msg = (
                         f"'{cookie_key}':'{cookie_value}'{'' if negative else ' not'} "
-                        "found in headers on page '{response.url}'"
+                        f"found in headers on page '{response.url}'"
                     )
                     raise AssertionError(msg)
