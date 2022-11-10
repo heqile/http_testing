@@ -34,6 +34,6 @@ class Assertions:
                 ) ^ negative:
                     msg = (
                         f"'{cookie_key}':'{cookie_value}'{'' if negative else ' not'} "
-                        f"found in headers on page '{response.url}'"
+                        f"found in cookies on page '{response.url}'"
                     )
                     raise AssertionError(msg)
