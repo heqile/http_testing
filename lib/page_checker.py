@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import json
+from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Optional
 
-from httpx import URL, Client
+from httpx import URL, Client, Response
 
 from .assertions import Assertions
 
@@ -54,5 +56,17 @@ class PageChecker:
                 should_not_find_assertions = Assertions(**should_not_find)
                 should_not_find_assertions.check_assertions(response=response, negative=True)
         except AssertionError as exc:
-            msg = f"{title} - {str(exc)}"
+            file_name = self._dump_response(response=response)
+            msg = f"{title} - {str(exc)} - please check file '{file_name}'"
             raise AssertionError(msg) from exc
+
+    @staticmethod
+    def _dump_response(response: Response) -> str:
+        result: Dict[str, Any] = {}
+        result["status_code"] = response.status_code
+        result["content"] = response.text
+        result["headers"] = dict(response.headers)
+        result["cookies"] = dict(response.cookies)
+        with NamedTemporaryFile(mode="wt", delete=False) as f:
+            json.dump(result, f)
+            return f.name
