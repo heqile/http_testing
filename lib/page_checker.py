@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from typing import Any, Dict, Optional
 
 from httpx import URL, Client
@@ -46,9 +47,14 @@ class PageChecker:
             cookies=cookies,
             follow_redirects=follow_redirects,
         )
-        if should_find:
-            should_find_assertions = Assertions(**should_find)
-            should_find_assertions.check_assertions(response=response)
-        if should_not_find:
-            should_not_find_assertions = Assertions(**should_not_find)
-            should_not_find_assertions.check_assertions(response=response, negative=True)
+        try:
+            if should_find:
+                should_find_assertions = Assertions(**should_find)
+                should_find_assertions.check_assertions(response=response)
+            if should_not_find:
+                should_not_find_assertions = Assertions(**should_not_find)
+                should_not_find_assertions.check_assertions(response=response, negative=True)
+        except AssertionError as exc:
+            msg = f"{title} - {str(exc)}"
+            logging.error(msg)
+            raise AssertionError(msg) from exc

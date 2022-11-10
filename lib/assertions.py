@@ -1,4 +1,3 @@
-import logging
 import re
 from dataclasses import dataclass
 from typing import Mapping, Optional, Sequence
@@ -17,7 +16,6 @@ class Assertions:
             for content in self.content:
                 if (re.search(content, response.text, re.MULTILINE) is None) ^ negative:
                     msg = f"'{content}'{'' if negative else ' not'} found on page '{response.url}'"
-                    logging.error(msg)
                     raise AssertionError(msg)
         if self.headers:
             for header_key, header_value in self.headers.items():
@@ -28,7 +26,6 @@ class Assertions:
                         f"'{header_key}':'{header_value}'{'' if negative else ' not'} "
                         "found in headers on page '{response.url}'"
                     )
-                    logging.error(msg)
                     raise AssertionError(msg)
         if self.cookies:
             for cookie_key, cookie_value in self.cookies.items():
@@ -39,5 +36,4 @@ class Assertions:
                         f"'{cookie_key}':'{cookie_value}'{'' if negative else ' not'} "
                         "found in headers on page '{response.url}'"
                     )
-                    logging.error(msg)
                     raise AssertionError(msg)
