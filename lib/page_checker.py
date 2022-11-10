@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import logging
 from typing import Any, Dict, Optional
 
 from httpx import URL, Client
@@ -56,5 +55,4 @@ class PageChecker:
                 should_not_find_assertions.check_assertions(response=response, negative=True)
         except AssertionError as exc:
             msg = f"{title} - {str(exc)}"
-            logging.error(msg)
             raise AssertionError(msg) from exc
