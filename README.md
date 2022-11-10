@@ -14,21 +14,4 @@ test user's account page, first, we authenticate the client by post user's name 
 then access the account page to verify some values. Of course, we can have several scenario in one test file.
 
 ### Create test suite
-```python
-# test_example.py
-
-scheme = "https"
-host = "example.com"
-port = 80
-
-def test_scenario_one(run_test):
-    run_test(title="login", base_url=None, url="/login", method="POST", data={"login": "test", "password": "123456"}, headers={}, cookies={}, follow=False, should_find=["ok", r"test"], should_not_find=["fail"])
-    run_test(title="account", url="/account", should_find=["1"])
-
-```
-
-## API
-### run_test
-```python
-
-```
+Check the file `test/test_example.py`
