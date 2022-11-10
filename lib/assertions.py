@@ -1,39 +1,45 @@
-import re
-from dataclasses import dataclass
+# type: ignore
+
 from typing import Mapping, Optional, Sequence
 
-from httpx import Response
+from httpx import Client, Response
+
+from .assertion_elements.content_assertion import ContentAssertion
+from .assertion_elements.cookies_assertion import CookiesAssertion
+from .assertion_elements.headers_assertion import HeadersAssertion
+from .assertion_elements.status_code_assertion import StatusCodeAssertion
+from .cookie import Cookie
 
 
-@dataclass
-class Assertions:
-    content: Optional[Sequence[str]] = None
-    headers: Optional[Mapping[str, str]] = None
-    cookies: Optional[Mapping[str, str]] = None
+class _AssertionsBase:
+    _negative: bool = False
+    status_code = StatusCodeAssertion()
+    content = ContentAssertion()
+    headers = HeadersAssertion()
+    cookies = CookiesAssertion()
 
-    def check_assertions(self, response: Response, negative: bool = False) -> None:
-        if self.content:
-            for content in self.content:
-                if (re.search(content, response.text, re.MULTILINE) is None) ^ negative:
-                    msg = f"'{content}'{'' if negative else ' not'} found on page '{response.url}'"
-                    raise AssertionError(msg)
-        if self.headers:
-            for header_key, header_value in self.headers.items():
-                if (
-                    header_key not in response.headers or re.search(header_value, response.headers[header_key]) is None
-                ) ^ negative:
-                    msg = (
-                        f"'{header_key}':'{header_value}'{'' if negative else ' not'} "
-                        f"found in headers on page '{response.url}'"
-                    )
-                    raise AssertionError(msg)
-        if self.cookies:
-            for cookie_key, cookie_value in self.cookies.items():
-                if (
-                    cookie_key not in response.cookies or re.search(cookie_value, response.cookies[cookie_key]) is None
-                ) ^ negative:
-                    msg = (
-                        f"'{cookie_key}':'{cookie_value}'{'' if negative else ' not'} "
-                        f"found in cookies on page '{response.url}'"
-                    )
-                    raise AssertionError(msg)
+    def __init__(
+        self,
+        status_code: Optional[int] = None,
+        content: Optional[Sequence[str]] = None,
+        headers: Optional[Mapping[str, str]] = None,
+        cookies: Optional[Sequence[Cookie]] = None,
+    ):
+        self.status_code = status_code
+        self.content = content
+        self.headers = headers
+        self.cookies = cookies
+
+    def check_assertions(self, http_client: Client, response: Response) -> None:
+        self.status_code.check(http_client, response, self._negative)
+        self.content.check(http_client, response, self._negative)
+        self.headers.check(http_client, response, self._negative)
+        self.cookies.check(http_client, response, self._negative)
+
+
+class Assertions(_AssertionsBase):
+    _negative: bool = False
+
+
+class NegativeAssertions(_AssertionsBase):
+    _negative: bool = True

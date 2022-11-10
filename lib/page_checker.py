@@ -6,23 +6,16 @@ from typing import Any, Dict, Optional
 
 from httpx import URL, Client, Response
 
-from .assertions import Assertions
+from .assertions import Assertions, NegativeAssertions
 
 
 class PageChecker:
     _base_url: URL
     _http_client: Client
 
-    def __init__(self, base_url: URL):
+    def __init__(self, http_client: Client, base_url: URL):
         self._base_url = base_url
-        self._http_client = Client(trust_env=False, verify=False)
-
-    def __enter__(self) -> PageChecker:
-        self._http_client.__enter__()
-        return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        return self._http_client.__exit__()
+        self._http_client = http_client
 
     def __call__(
         self,
@@ -35,8 +28,8 @@ class PageChecker:
         headers: Optional[Dict[str, str]] = None,
         cookies: Optional[Dict[str, str]] = None,
         follow_redirects: bool = False,
-        should_find: Optional[Dict] = None,
-        should_not_find: Optional[Dict] = None,
+        should_find: Optional[Assertions] = None,
+        should_not_find: Optional[NegativeAssertions] = None,
         **_: Any,
     ) -> Any:
         base_url = base_url or self._base_url
@@ -50,11 +43,12 @@ class PageChecker:
         )
         try:
             if should_find:
-                should_find_assertions = Assertions(**should_find)
-                should_find_assertions.check_assertions(response=response)
+                should_find.check_assertions(http_client=self._http_client, response=response)
             if should_not_find:
-                should_not_find_assertions = Assertions(**should_not_find)
-                should_not_find_assertions.check_assertions(response=response, negative=True)
+                should_not_find.check_assertions(
+                    http_client=self._http_client,
+                    response=response,
+                )
         except AssertionError as exc:
             file_name = self._dump_response(response=response)
             msg = f"{title} - {str(exc)} - please check file '{file_name}'"
@@ -62,11 +56,12 @@ class PageChecker:
 
     @staticmethod
     def _dump_response(response: Response) -> str:
-        result: Dict[str, Any] = {}
-        result["status_code"] = response.status_code
-        result["content"] = response.text
-        result["headers"] = dict(response.headers)
-        result["cookies"] = dict(response.cookies)
+        result: Dict[str, Any] = {
+            "status_code": response.status_code,
+            "content": response.text,
+            "headers": dict(response.headers),
+            "cookies": dict(response.cookies),
+        }
         with NamedTemporaryFile(mode="wt", delete=False) as f:
             json.dump(result, f)
             return f.name
