@@ -1,8 +1,12 @@
-from typing import Any
+from collections import defaultdict
+from typing import Any, Dict
+
+from httpx import Client, Response
 
 
 class AssertionBase:
     _assert_type: Any = None
+    assertion_instances: Dict[int, Any] = defaultdict(list)
 
     def __get__(self, instance, owner):
         if not hasattr(instance, self._private_name):
@@ -13,4 +17,11 @@ class AssertionBase:
         self._private_name = f"_{name}"
 
     def __set__(self, instance, value):
-        setattr(instance, self._private_name, self._assert_type(value))
+        assertion_instance = self._assert_type(value)
+        self.assertion_instances[id(instance)].append(assertion_instance)
+        setattr(instance, self._private_name, assertion_instance)
+
+
+def check_all(instance, http_client: Client, response: Response, negative: bool):
+    for assertion_instance in AssertionBase.assertion_instances[id(instance)]:
+        getattr(assertion_instance, "check")(http_client, response, negative)

@@ -4,6 +4,7 @@ from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
 
+from .assertion_elements.assertion_base import check_all
 from .assertion_elements.content_assertion import ContentAssertion
 from .assertion_elements.cookies_assertion import CookiesAssertion
 from .assertion_elements.headers_assertion import HeadersAssertion
@@ -31,10 +32,7 @@ class _AssertionsBase:
         self.cookies = cookies
 
     def check_assertions(self, http_client: Client, response: Response) -> None:
-        self.status_code.check(http_client, response, self._negative)
-        self.content.check(http_client, response, self._negative)
-        self.headers.check(http_client, response, self._negative)
-        self.cookies.check(http_client, response, self._negative)
+        check_all(instance=self, http_client=http_client, response=response, negative=self._negative)
 
 
 class Assertions(_AssertionsBase):
