@@ -1,5 +1,3 @@
-# type: ignore
-
 from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
