@@ -5,8 +5,7 @@ from unittest import mock
 import pytest
 from httpx import Client, Response
 
-from lib.assertion_elements.cookies_assertion import _CookiesAssertElement
-from lib.cookie import Cookie
+from lib.assertion_elements.cookies_assertion import Cookie, _CookiesAssertElement
 
 
 class CookieSuite:

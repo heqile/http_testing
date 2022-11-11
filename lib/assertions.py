@@ -4,10 +4,9 @@ from httpx import Client, Response
 
 from .assertion_elements.assertion_base import check_all
 from .assertion_elements.content_assertion import ContentAssertion
-from .assertion_elements.cookies_assertion import CookiesAssertion
+from .assertion_elements.cookies_assertion import Cookie, CookiesAssertion
 from .assertion_elements.headers_assertion import HeadersAssertion
 from .assertion_elements.status_code_assertion import StatusCodeAssertion
-from .cookie import Cookie
 
 
 class _AssertionsBase:

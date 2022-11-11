@@ -1,13 +1,23 @@
 import re
 from collections import defaultdict
+from dataclasses import dataclass
 from http.cookiejar import Cookie as HttpCookie
 from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
 
-from ..cookie import Cookie
 from .assert_element_base import AssertElementBase
 from .assertion_base import AssertionBase
+
+
+@dataclass
+class Cookie:
+    name: str
+    value_pattern: str
+    domain: Optional[str] = None
+    path: Optional[str] = None
+    secure: Optional[bool] = None
+    expires: Optional[str] = None
 
 
 class _CookiesAssertElement(AssertElementBase):

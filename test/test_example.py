@@ -1,5 +1,5 @@
+from lib.assertion_elements.cookies_assertion import Cookie
 from lib.assertions import Assertions, NegativeAssertions
-from lib.cookie import Cookie
 from lib.page_checker import PageChecker
 
 host = "www.google.com"
