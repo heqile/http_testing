@@ -1,6 +1,6 @@
 from collections import defaultdict
 from typing import Dict, List, Type
-from weakref import proxy
+from weakref import finalize
 
 from httpx import Client, Response
 
@@ -21,10 +21,20 @@ class AssertionBase:
 
     def __set__(self, instance, value):
         assertion_instance = self._assert_type(value)
-        self.assertion_instances[id(instance)].append(proxy(assertion_instance))
+        dict_key = get_dict_key(instance)
+        self.assertion_instances[dict_key].append(assertion_instance)
         setattr(instance, self._private_name, assertion_instance)
+        finalize(instance, self._remove_assertion_instance, dict_key)  # remove the entry when instance is deleted
+
+    def _remove_assertion_instance(self, key):
+        if key in self.assertion_instances:
+            del self.assertion_instances[key]
+
+
+def get_dict_key(instance):
+    return id(instance)
 
 
 def check_all(instance, http_client: Client, response: Response, negative: bool):
-    for assertion_instance in AssertionBase.assertion_instances[id(instance)]:
+    for assertion_instance in AssertionBase.assertion_instances[get_dict_key(instance)]:
         assertion_instance.check(http_client, response, negative)
