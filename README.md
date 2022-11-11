@@ -20,7 +20,7 @@ which is a pytest fixture.
 ```python
 # test/test_example.py
 
-from lib.assertion_elements.cookies_assertion import CookieP
+from lib.assertion_elements.cookies_assertion import Cookie
 from lib.assertions import Assertions, NegativeAssertions
 from lib.page_checker import PageChecker
 
