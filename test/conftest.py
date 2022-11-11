@@ -1,16 +1,24 @@
+import dataclasses
+
 import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
 
+from lib.http_client_configuration import HttpClientConfiguration
 from lib.page_checker import PageChecker
 
 
 @pytest.fixture
-def http_client():
-    with Client(
+def http_client_config():
+    return HttpClientConfiguration(
         trust_env=False,
         verify=False,
-    ) as client:
+    )
+
+
+@pytest.fixture
+def http_client(http_client_config: HttpClientConfiguration):
+    with Client(**dataclasses.asdict(http_client_config)) as client:
         yield client
 
 
