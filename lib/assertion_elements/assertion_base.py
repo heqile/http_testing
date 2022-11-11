@@ -1,5 +1,6 @@
 from collections import defaultdict
 from typing import Dict, List, Type
+from weakref import proxy
 
 from httpx import Client, Response
 
@@ -20,7 +21,7 @@ class AssertionBase:
 
     def __set__(self, instance, value):
         assertion_instance = self._assert_type(value)
-        self.assertion_instances[id(instance)].append(assertion_instance)
+        self.assertion_instances[id(instance)].append(proxy(assertion_instance))
         setattr(instance, self._private_name, assertion_instance)
 
 
