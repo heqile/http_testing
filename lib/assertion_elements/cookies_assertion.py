@@ -1,4 +1,5 @@
 import re
+from collections import defaultdict
 from http.cookiejar import Cookie as HttpCookie
 from typing import Mapping, Optional, Sequence
 
@@ -16,11 +17,13 @@ class _CookiesAssertElement(AssertElementBase):
         if self.value is None:
             return
         for cookie in self.value:
-            all_cookies = {
-                **{cookiejar.name: cookiejar for cookiejar in http_client.cookies.jar},
-                **{cookiejar.name: cookiejar for cookiejar in response.cookies.jar},
-            }
-            is_cookie_exist = self._is_cookie_match(target_cookie=cookie, cookies=all_cookies)
+            all_cookies = defaultdict(list)  # same cookie name can be on different sites
+            for cookiejar in http_client.cookies.jar:
+                all_cookies[cookiejar.name].append(cookiejar)
+            for cookiejar in response.cookies.jar:
+                all_cookies[cookiejar.name].append(cookiejar)
+
+            is_cookie_exist = self._is_cookie_match(target_cookie=cookie, all_cookies=all_cookies)
             if (not is_cookie_exist) ^ negative:
                 raise AssertionError(
                     self._make_message(
@@ -32,13 +35,24 @@ class _CookiesAssertElement(AssertElementBase):
                 )
 
     @staticmethod
-    def _is_cookie_match(target_cookie: Cookie, cookies: Mapping[str, HttpCookie]):
-        cookie = cookies.get(target_cookie.name)
-        if cookie is None or cookie.value is None:
+    def _is_cookie_match(target_cookie: Cookie, all_cookies: Mapping[str, Sequence[HttpCookie]]):
+        cookies = all_cookies.get(target_cookie.name)
+        if cookies is None:
             return False
-        if re.search(target_cookie.value_pattern, cookie.value) is None:
-            return False
-        return True
+        for cookie in cookies:
+            if cookie.value is None:
+                continue
+            if target_cookie.domain is not None and cookie.domain_specified and target_cookie.domain != cookie.domain:
+                continue
+            if target_cookie.path is not None and cookie.path_specified and target_cookie.path != cookie.path:
+                continue
+            if target_cookie.secure is not None and target_cookie.secure != cookie.secure:
+                continue
+            if target_cookie.expires is not None and target_cookie.expires != cookie.expires:
+                continue
+            if re.search(target_cookie.value_pattern, cookie.value) is not None:
+                return True
+        return False
 
 
 class CookiesAssertion(AssertionBase):
