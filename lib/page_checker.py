@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import json
 from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Optional
@@ -31,7 +29,11 @@ class PageChecker:
         should_find: Optional[Assertions] = None,
         should_not_find: Optional[NegativeAssertions] = None,
         **_: Any,
-    ) -> Any:
+    ) -> None:
+        """
+        Call the target url with given arguments, then verify the response against given rules
+        Return None if success, otherwise raise AssertionError
+        """
         base_url = base_url or self._base_url
         response = self._http_client.request(
             method=method,
@@ -45,10 +47,7 @@ class PageChecker:
             if should_find:
                 should_find.check_assertions(http_client=self._http_client, response=response)
             if should_not_find:
-                should_not_find.check_assertions(
-                    http_client=self._http_client,
-                    response=response,
-                )
+                should_not_find.check_assertions(http_client=self._http_client, response=response)
         except AssertionError as exc:
             file_name = self._dump_response(response=response)
             msg = f"{title} - {str(exc)} - please check file '{file_name}'"
@@ -56,6 +55,10 @@ class PageChecker:
 
     @staticmethod
     def _dump_response(response: Response) -> str:
+        """
+        Save the response's essential contents into a temporay file
+        Return the file name
+        """
         result: Dict[str, Any] = {
             "status_code": response.status_code,
             "content": response.text,
