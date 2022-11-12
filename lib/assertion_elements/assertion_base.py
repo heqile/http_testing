@@ -1,4 +1,4 @@
-from typing import Type
+from typing import ClassVar, Type
 from weakref import WeakKeyDictionary
 
 from httpx import Client, Response
@@ -10,7 +10,7 @@ class AssertionBase:
     _assert_type: Type[AssertElementBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
-    assertion_instances: WeakKeyDictionary = WeakKeyDictionary()
+    assertion_instances: ClassVar[WeakKeyDictionary] = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
         if not hasattr(instance, self._private_name):
