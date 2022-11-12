@@ -7,7 +7,7 @@ from typing import Mapping, Optional, Sequence
 from httpx import Client, Response
 
 from .assert_element_base import AssertElementBase
-from .assertion_base import AssertionBase
+from .assertion_attribute_base import AssertionAttributeBase
 
 
 @dataclass
@@ -65,5 +65,5 @@ class _CookiesAssertElement(AssertElementBase):
         return False
 
 
-class CookiesAssertion(AssertionBase):
+class CookiesAssertion(AssertionAttributeBase):
     _assert_type = _CookiesAssertElement

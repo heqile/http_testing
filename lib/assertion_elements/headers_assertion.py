@@ -4,7 +4,7 @@ from typing import Mapping, Optional
 from httpx import Client, Response
 
 from .assert_element_base import AssertElementBase
-from .assertion_base import AssertionBase
+from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _HeadersAssertElement(AssertElementBase):
@@ -29,5 +29,5 @@ class _HeadersAssertElement(AssertElementBase):
         return
 
 
-class HeadersAssertion(AssertionBase):
+class HeadersAssertion(AssertionAttributeBase):
     _assert_type = _HeadersAssertElement

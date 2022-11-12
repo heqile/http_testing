@@ -6,7 +6,7 @@ from httpx import Client, Response
 from .assert_element_base import AssertElementBase
 
 
-class AssertionBase:
+class AssertionAttributeBase:
     _assert_type: Type[AssertElementBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
@@ -30,5 +30,5 @@ class AssertionBase:
 
 def check_all(instance, http_client: Client, response: Response, negative: bool):
     assertion_instance: AssertElementBase
-    for assertion_instance in AssertionBase.assertion_instances[instance]:
+    for assertion_instance in AssertionAttributeBase.assertion_instances[instance]:
         assertion_instance.check(http_client, response, negative)

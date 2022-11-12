@@ -3,7 +3,7 @@ from typing import Optional
 from httpx import Client, Response
 
 from .assert_element_base import AssertElementBase
-from .assertion_base import AssertionBase
+from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _StatusCodeAssertElement(AssertElementBase):
@@ -19,5 +19,5 @@ class _StatusCodeAssertElement(AssertElementBase):
                 )
 
 
-class StatusCodeAssertion(AssertionBase):
+class StatusCodeAssertion(AssertionAttributeBase):
     _assert_type = _StatusCodeAssertElement

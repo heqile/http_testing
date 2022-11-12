@@ -4,7 +4,7 @@ from typing import Optional, Sequence
 from httpx import Client, Response
 
 from .assert_element_base import AssertElementBase
-from .assertion_base import AssertionBase
+from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _ContentAssertElement(AssertElementBase):
@@ -23,5 +23,5 @@ class _ContentAssertElement(AssertElementBase):
         return
 
 
-class ContentAssertion(AssertionBase):
+class ContentAssertion(AssertionAttributeBase):
     _assert_type = _ContentAssertElement
