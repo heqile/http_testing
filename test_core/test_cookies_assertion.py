@@ -111,9 +111,9 @@ def test_check_when_secure_not_match(negative, expected_raise):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
     mock_response = mock.MagicMock(spec=Response, auto_spec=True)
-    assert_element = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", secure=True)])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", secure=True)])
     with expected_raise:
-        assert_element.check(http_client=mock_client, response=mock_response, negative=negative)
+        checker.check(http_client=mock_client, response=mock_response, negative=negative)
 
 
 @pytest.mark.parametrize(
@@ -136,6 +136,6 @@ def test_check_should_raise_when_expiration_not_match(negative, expected_raise):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
     mock_response = mock.MagicMock(spec=Response, auto_spec=True)
-    assert_element = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", expires=1)])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", expires=1)])
     with expected_raise:
-        assert_element.check(http_client=mock_client, response=mock_response, negative=negative)
+        checker.check(http_client=mock_client, response=mock_response, negative=negative)
