@@ -7,7 +7,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _ContentAssertElement(AssertElementCheckerBase):
+class _ContentChecker(AssertElementCheckerBase):
     value: Optional[Sequence[str]]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
@@ -24,4 +24,4 @@ class _ContentAssertElement(AssertElementCheckerBase):
 
 
 class ContentAssertion(AssertionAttributeBase):
-    _assert_type = _ContentAssertElement
+    _assert_type = _ContentChecker

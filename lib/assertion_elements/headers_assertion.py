@@ -7,7 +7,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _HeadersAssertElement(AssertElementCheckerBase):
+class _HeadersChecker(AssertElementCheckerBase):
     value: Optional[Mapping[str, str]]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
@@ -30,4 +30,4 @@ class _HeadersAssertElement(AssertElementCheckerBase):
 
 
 class HeadersAssertion(AssertionAttributeBase):
-    _assert_type = _HeadersAssertElement
+    _assert_type = _HeadersChecker

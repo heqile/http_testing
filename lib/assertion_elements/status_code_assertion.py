@@ -6,7 +6,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _StatusCodeAssertElement(AssertElementCheckerBase):
+class _StatusCodeChecker(AssertElementCheckerBase):
     value: Optional[int]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
@@ -20,4 +20,4 @@ class _StatusCodeAssertElement(AssertElementCheckerBase):
 
 
 class StatusCodeAssertion(AssertionAttributeBase):
-    _assert_type = _StatusCodeAssertElement
+    _assert_type = _StatusCodeChecker
