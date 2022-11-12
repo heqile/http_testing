@@ -20,9 +20,7 @@ class Cookie:
     expires: Optional[str] = None
 
 
-class _CookiesChecker(AssertElementCheckerBase):
-    value: Optional[Sequence[Cookie]]
-
+class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
     def check(self, http_client: Client, response: Response, negative: bool = False) -> None:
         if self.value is None:
             return

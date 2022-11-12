@@ -1,5 +1,5 @@
 import re
-from typing import Optional, Sequence
+from typing import Sequence
 
 from httpx import Client, Response
 
@@ -7,9 +7,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _ContentChecker(AssertElementCheckerBase):
-    value: Optional[Sequence[str]]
-
+class _ContentChecker(AssertElementCheckerBase[Sequence[str]]):
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
         if self.value is None:
             return

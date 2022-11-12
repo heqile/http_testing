@@ -1,5 +1,5 @@
 import re
-from typing import Mapping, Optional
+from typing import Mapping
 
 from httpx import Client, Response
 
@@ -7,9 +7,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _HeadersChecker(AssertElementCheckerBase):
-    value: Optional[Mapping[str, str]]
-
+class _HeadersChecker(AssertElementCheckerBase[Mapping[str, str]]):
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
         if self.value is None:
             return

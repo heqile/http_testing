@@ -1,14 +1,10 @@
-from typing import Optional
-
 from httpx import Client, Response
 
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _StatusCodeChecker(AssertElementCheckerBase):
-    value: Optional[int]
-
+class _StatusCodeChecker(AssertElementCheckerBase[int]):
     def check(self, _: Client, response: Response, negative: bool = False) -> None:
         if self.value:
             if (self.value != response.status_code) ^ negative:
