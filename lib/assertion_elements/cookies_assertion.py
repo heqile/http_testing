@@ -27,7 +27,8 @@ class _CookiesChecker(AssertElementCheckerBase):
         if self.value is None:
             return
         for cookie in self.value:
-            all_cookies = defaultdict(list)  # same cookie name can be on different sites
+            # same cookie name can be on different sites, so use dict to group cookies list by name
+            all_cookies = defaultdict(list)
             for cookiejar in http_client.cookies.jar:
                 all_cookies[cookiejar.name].append(cookiejar)
             for cookiejar in response.cookies.jar:
