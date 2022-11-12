@@ -8,7 +8,7 @@ from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _HeadersChecker(AssertElementCheckerBase[Mapping[str, str]]):
-    def check(self, _: Client, response: Response, negative: bool = False) -> None:
+    def check(self, http_client: Client, response: Response, negative: bool = False) -> None:
         if self.value is None:
             return
         for header_key, header_value in self.value.items():

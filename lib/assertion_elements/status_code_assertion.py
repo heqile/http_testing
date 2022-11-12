@@ -5,7 +5,7 @@ from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _StatusCodeChecker(AssertElementCheckerBase[int]):
-    def check(self, _: Client, response: Response, negative: bool = False) -> None:
+    def check(self, http_client: Client, response: Response, negative: bool = False) -> None:
         if self.value:
             if (self.value != response.status_code) ^ negative:
                 raise AssertionError(
