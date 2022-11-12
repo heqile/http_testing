@@ -6,7 +6,7 @@ from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
 
-from .assert_element_base import AssertElementBase
+from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
@@ -20,7 +20,7 @@ class Cookie:
     expires: Optional[str] = None
 
 
-class _CookiesAssertElement(AssertElementBase):
+class _CookiesAssertElement(AssertElementCheckerBase):
     value: Optional[Sequence[Cookie]]
 
     def check(self, http_client: Client, response: Response, negative: bool = False) -> None:

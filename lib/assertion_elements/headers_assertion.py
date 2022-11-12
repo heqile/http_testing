@@ -3,11 +3,11 @@ from typing import Mapping, Optional
 
 from httpx import Client, Response
 
-from .assert_element_base import AssertElementBase
+from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _HeadersAssertElement(AssertElementBase):
+class _HeadersAssertElement(AssertElementCheckerBase):
     value: Optional[Mapping[str, str]]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:

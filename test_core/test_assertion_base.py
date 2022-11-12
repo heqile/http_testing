@@ -1,8 +1,8 @@
-from lib.assertion_elements.assert_element_base import AssertElementBase
+from lib.assertion_elements.assert_element_checker_base import AssertElementCheckerBase
 from lib.assertion_elements.assertion_attribute_base import AssertionAttributeBase
 
 
-class SampleAssertElement(AssertElementBase):
+class SampleAssertElement(AssertElementCheckerBase):
     ...
 
 

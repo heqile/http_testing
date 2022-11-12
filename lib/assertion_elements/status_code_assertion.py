@@ -2,11 +2,11 @@ from typing import Optional
 
 from httpx import Client, Response
 
-from .assert_element_base import AssertElementBase
+from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _StatusCodeAssertElement(AssertElementBase):
+class _StatusCodeAssertElement(AssertElementCheckerBase):
     value: Optional[int]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:

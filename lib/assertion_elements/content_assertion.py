@@ -3,11 +3,11 @@ from typing import Optional, Sequence
 
 from httpx import Client, Response
 
-from .assert_element_base import AssertElementBase
+from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-class _ContentAssertElement(AssertElementBase):
+class _ContentAssertElement(AssertElementCheckerBase):
     value: Optional[Sequence[str]]
 
     def check(self, _: Client, response: Response, negative: bool = False) -> None:

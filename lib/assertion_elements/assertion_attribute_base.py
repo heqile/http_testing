@@ -3,11 +3,11 @@ from weakref import WeakKeyDictionary
 
 from httpx import Client, Response
 
-from .assert_element_base import AssertElementBase
+from .assert_element_checker_base import AssertElementCheckerBase
 
 
 class AssertionAttributeBase:
-    _assert_type: Type[AssertElementBase]
+    _assert_type: Type[AssertElementCheckerBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
     assertion_instances: ClassVar[WeakKeyDictionary] = WeakKeyDictionary()
@@ -29,6 +29,6 @@ class AssertionAttributeBase:
 
 
 def check_all(instance, http_client: Client, response: Response, negative: bool):
-    assertion_instance: AssertElementBase
+    assertion_instance: AssertElementCheckerBase
     for assertion_instance in AssertionAttributeBase.assertion_instances[instance]:
         assertion_instance.check(http_client, response, negative)
