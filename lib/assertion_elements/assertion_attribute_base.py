@@ -10,7 +10,8 @@ class AssertionAttributeBase:
     _checker_type: Type[AssertElementCheckerBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
-    assertion_instances: ClassVar[WeakKeyDictionary] = WeakKeyDictionary()
+    # it groups the checkers by owner : {owner_instance: [checker_instance, ...]}
+    checkers: ClassVar[WeakKeyDictionary] = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
         if not hasattr(instance, self._private_name):
@@ -21,14 +22,14 @@ class AssertionAttributeBase:
         self._private_name = f"_{name}"
 
     def __set__(self, instance, value):
-        assertion_instance = self._checker_type(value)
-        if instance not in self.assertion_instances:
-            self.assertion_instances.setdefault(instance, [])
-        self.assertion_instances[instance].append(assertion_instance)
-        setattr(instance, self._private_name, assertion_instance)
+        checker = self._checker_type(value)
+        if instance not in self.checkers:
+            self.checkers.setdefault(instance, [])
+        self.checkers[instance].append(checker)
+        setattr(instance, self._private_name, checker)
 
 
 def check_all(instance, http_client: Client, response: Response, negative: bool):
-    assertion_instance: AssertElementCheckerBase
-    for assertion_instance in AssertionAttributeBase.assertion_instances[instance]:
-        assertion_instance.check(http_client, response, negative)
+    checker: AssertElementCheckerBase
+    for checker in AssertionAttributeBase.checkers[instance]:
+        checker.check(http_client, response, negative)

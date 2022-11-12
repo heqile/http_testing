@@ -17,6 +17,6 @@ class Sample:
 def test_remove_assertion_instances_entry_if_owner_obj_is_deleted():
     obj = Sample()
     obj.a = 1
-    assert len(AssertionAttributeBase.assertion_instances) == 1
+    assert len(AssertionAttributeBase.checkers) == 1
     del obj
-    assert len(AssertionAttributeBase.assertion_instances) == 0
+    assert len(AssertionAttributeBase.checkers) == 0
