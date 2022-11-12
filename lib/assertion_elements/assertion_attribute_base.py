@@ -7,21 +7,21 @@ from .assert_element_checker_base import AssertElementCheckerBase
 
 
 class AssertionAttributeBase:
-    _assert_type: Type[AssertElementCheckerBase]
+    _checker_type: Type[AssertElementCheckerBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
     assertion_instances: ClassVar[WeakKeyDictionary] = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
         if not hasattr(instance, self._private_name):
-            return self._assert_type()
+            return self._checker_type()
         return getattr(instance, self._private_name)
 
     def __set_name__(self, owner, name):
         self._private_name = f"_{name}"
 
     def __set__(self, instance, value):
-        assertion_instance = self._assert_type(value)
+        assertion_instance = self._checker_type(value)
         if instance not in self.assertion_instances:
             self.assertion_instances.setdefault(instance, [])
         self.assertion_instances[instance].append(assertion_instance)

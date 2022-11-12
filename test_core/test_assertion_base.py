@@ -7,7 +7,7 @@ class SampleAssertElement(AssertElementCheckerBase):
 
 
 class SampleAssertion(AssertionAttributeBase):
-    _assert_type = SampleAssertElement
+    _checker_type = SampleAssertElement
 
 
 class Sample:

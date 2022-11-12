@@ -24,4 +24,4 @@ class _ContentChecker(AssertElementCheckerBase):
 
 
 class ContentAssertion(AssertionAttributeBase):
-    _assert_type = _ContentChecker
+    _checker_type = _ContentChecker

@@ -30,4 +30,4 @@ class _HeadersChecker(AssertElementCheckerBase):
 
 
 class HeadersAssertion(AssertionAttributeBase):
-    _assert_type = _HeadersChecker
+    _checker_type = _HeadersChecker

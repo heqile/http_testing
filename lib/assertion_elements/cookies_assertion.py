@@ -66,4 +66,4 @@ class _CookiesChecker(AssertElementCheckerBase):
 
 
 class CookiesAssertion(AssertionAttributeBase):
-    _assert_type = _CookiesChecker
+    _checker_type = _CookiesChecker

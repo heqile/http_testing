@@ -20,4 +20,4 @@ class _StatusCodeChecker(AssertElementCheckerBase):
 
 
 class StatusCodeAssertion(AssertionAttributeBase):
-    _assert_type = _StatusCodeChecker
+    _checker_type = _StatusCodeChecker
