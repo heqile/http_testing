@@ -26,7 +26,6 @@ class _HeadersChecker(AssertElementCheckerBase):
                         negative=negative,
                     )
                 )
-        return
 
 
 class HeadersAssertion(AssertionAttributeBase):

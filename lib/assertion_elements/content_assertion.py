@@ -20,7 +20,6 @@ class _ContentChecker(AssertElementCheckerBase):
                         info=f"'{self.value}'", check_type="content", url=str(response.url), negative=negative
                     )
                 )
-        return
 
 
 class ContentAssertion(AssertionAttributeBase):
