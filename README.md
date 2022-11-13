@@ -17,9 +17,8 @@ which is a pytest fixture.
 
 ## Tutorial
 ### Install
-Download the wheel file and run the following command:
 ```bash
-pip install http_testing-0.1.0-py3-none-any.whl
+pip install pytest-httptesting
 ```
 
 ### Create test suite
