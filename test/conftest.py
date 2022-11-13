@@ -1,5 +1,4 @@
-import dataclasses
-
+import attrs
 import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
@@ -18,7 +17,7 @@ def http_client_config():
 
 @pytest.fixture
 def http_client(http_client_config: HttpClientConfiguration):
-    with Client(**dataclasses.asdict(http_client_config)) as client:
+    with Client(**attrs.asdict(http_client_config)) as client:
         yield client
 
 

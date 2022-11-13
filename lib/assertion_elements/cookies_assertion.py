@@ -1,16 +1,16 @@
 import re
 from collections import defaultdict
-from dataclasses import dataclass
 from http.cookiejar import Cookie as HttpCookie
 from typing import Mapping, Optional, Sequence
 
+from attrs import define
 from httpx import Client, Response
 
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
 
-@dataclass
+@define
 class Cookie:
     name: str
     value_pattern: str

@@ -1,8 +1,9 @@
-from dataclasses import dataclass
 from typing import Any
 
+from attrs import define
 
-@dataclass
+
+@define
 class Spec:
     negative: Any
     expected: Any

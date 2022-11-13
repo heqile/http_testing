@@ -1,8 +1,9 @@
-from dataclasses import dataclass
 from typing import Dict, Optional
 
+from attrs import define
 
-@dataclass
+
+@define
 class HttpClientConfiguration:
     headers: Optional[Dict[str, str]] = None
     cookies: Optional[Dict[str, str]] = None
