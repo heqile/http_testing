@@ -2,7 +2,7 @@ from contextlib import nullcontext as does_not_raise
 
 from httpx import Client, Response
 
-from lib.assertion_elements.content_assertion import _ContentChecker
+from http_testing.assertion_elements.content_assertion import _ContentChecker
 
 from .utils import Spec
 

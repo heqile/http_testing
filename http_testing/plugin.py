@@ -3,16 +3,13 @@ import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
 
-from http_testing.http_client_configuration import HttpClientConfiguration
-from http_testing.page_checker import PageChecker
+from .http_client_configuration import HttpClientConfiguration
+from .page_checker import PageChecker
 
 
 @pytest.fixture
 def http_client_config():
-    return HttpClientConfiguration(
-        trust_env=False,
-        verify=False,
-    )
+    return HttpClientConfiguration()
 
 
 @pytest.fixture

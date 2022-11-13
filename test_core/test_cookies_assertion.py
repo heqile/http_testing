@@ -4,7 +4,7 @@ from http.cookiejar import CookieJar
 
 from httpx import Client, Response
 
-from lib.assertion_elements.cookies_assertion import Cookie, _CookiesChecker
+from http_testing.assertion_elements.cookies_assertion import Cookie, _CookiesChecker
 
 from .utils import Spec
 

@@ -1,6 +1,6 @@
-from lib.assertion_elements.cookies_assertion import Cookie
-from lib.assertions import Assertions, NegativeAssertions
-from lib.page_checker import PageChecker
+from http_testing.assertion_elements.cookies_assertion import Cookie
+from http_testing.assertions import Assertions, NegativeAssertions
+from http_testing.page_checker import PageChecker
 
 host = "www.google.com"
 

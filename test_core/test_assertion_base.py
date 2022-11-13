@@ -1,5 +1,5 @@
-from lib.assertion_elements.assert_element_checker_base import AssertElementCheckerBase
-from lib.assertion_elements.assertion_attribute_base import AssertionAttributeBase
+from http_testing.assertion_elements.assert_element_checker_base import AssertElementCheckerBase
+from http_testing.assertion_elements.assertion_attribute_base import AssertionAttributeBase
 
 
 class SampleAssertElement(AssertElementCheckerBase):

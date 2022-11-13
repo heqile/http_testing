@@ -6,6 +6,11 @@ authors = ["HE Qile <mr.qile@gmail.com>"]
 readme = "README.md"
 packages = [{include = "http_testing"}]
 
+homepage = "https://github.com/heqile/http_testing"
+repository = "https://github.com/heqile/http_testing"
+
+include = ["LICENSE"]
+
 [tool.poetry.dependencies]
 python = "^3.8"
 pytest = "^7.2.0"
@@ -20,3 +25,6 @@ mypy = "^0.990"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."pytest11"]
+"http_page_checker" = "http_testing.plugin"
