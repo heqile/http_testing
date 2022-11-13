@@ -1,6 +1,5 @@
 from http.cookiejar import Cookie as HttpCookie
 from http.cookiejar import CookieJar
-from unittest import mock
 
 from httpx import Client, Response
 
@@ -40,42 +39,36 @@ class CookieSuite:
         return cookie
 
 
-def test_check_with_same_cookie_name_on_multiple_sites(should_not_raise: Spec):
-    mock_client = mock.MagicMock(spec=Client, auto_spec=True)
+def test_check_with_same_cookie_name_on_multiple_sites(
+    should_not_raise: Spec, mock_client: Client, mock_response: Response
+):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A_on_another_site())
-    mock_response = mock.MagicMock(spec=Response, auto_spec=True)
     checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", domain="site_one")])
     with should_not_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_not_raise.negative)
 
 
-def test_check_with_not_cookie_match_on_same_site(should_raise: Spec):
-    mock_client = mock.MagicMock(spec=Client, auto_spec=True)
+def test_check_with_not_cookie_match_on_same_site(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A_on_another_site())
-    mock_response = mock.MagicMock(spec=Response, auto_spec=True)
     checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", domain="site_one")])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
 
 
-def test_check_when_secure_not_match(should_raise: Spec):
-    mock_client = mock.MagicMock(spec=Client, auto_spec=True)
+def test_check_when_secure_not_match(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
-    mock_response = mock.MagicMock(spec=Response, auto_spec=True)
     checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", secure=True)])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
 
 
-def test_check_should_raise_when_expiration_not_match(should_raise: Spec):
-    mock_client = mock.MagicMock(spec=Client, auto_spec=True)
+def test_check_should_raise_when_expiration_not_match(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
-    mock_response = mock.MagicMock(spec=Response, auto_spec=True)
     checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", expires=1)])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)

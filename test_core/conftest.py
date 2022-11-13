@@ -1,6 +1,8 @@
 from contextlib import nullcontext
+from unittest import mock
 
 import pytest
+from httpx import Client, Response
 
 from .utils import Spec
 
@@ -25,3 +27,13 @@ def should_raise(request):
 )
 def should_not_raise(request):
     return request.param
+
+
+@pytest.fixture
+def mock_client():
+    return mock.MagicMock(spec=Client, auto_spec=True)
+
+
+@pytest.fixture
+def mock_response():
+    return mock.MagicMock(spec=Response, auto_spec=True)
