@@ -16,13 +16,19 @@ then access the account page to verify some values. Each step is described by ca
 which is a pytest fixture.
 
 ## Tutorial
+### Install
+Download the wheel file and run the following command:
+```bash
+pip install http_testing-0.1.0-py3-none-any.whl
+```
+
 ### Create test suite
 ```python
 # test/test_example.py
 
-from lib.assertion_elements.cookies_assertion import Cookie
-from lib.assertions import Assertions, NegativeAssertions
-from lib.page_checker import PageChecker
+from http_testing.assertion_elements.cookies_assertion import Cookie
+from http_testing.assertions import Assertions, NegativeAssertions
+from http_testing.page_checker import PageChecker
 
 host = "www.google.com"  # madatory: used in the `check` fixture
 scheme = "https"  # "https" by default
