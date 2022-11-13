@@ -12,6 +12,7 @@ class _HeadersChecker(AssertElementCheckerBase[Mapping[str, str]]):
         if self.value is None:
             return
         for header_key, header_value in self.value.items():
+            # the header names in response are case-insensitive
             is_header_not_found = (
                 header_key not in response.headers or re.search(header_value, response.headers[header_key]) is None
             )
