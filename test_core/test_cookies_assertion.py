@@ -1,3 +1,4 @@
+from contextlib import nullcontext as does_not_raise
 from http.cookiejar import Cookie as HttpCookie
 from http.cookiejar import CookieJar
 
@@ -72,3 +73,14 @@ def test_check_should_raise_when_expiration_not_match(should_raise: Spec, mock_c
     checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", expires=1)])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
+
+
+def test_check_not_raise_when_value_is_none(mock_client: Client, mock_response: Response):
+    checker = _CookiesChecker(value=None)
+    with does_not_raise():
+        # negative = False
+        checker.check(http_client=mock_client, response=mock_response, negative=False)
+
+    with does_not_raise():
+        # negative = True
+        checker.check(http_client=mock_client, response=mock_response, negative=True)

@@ -1,4 +1,4 @@
-from contextlib import nullcontext
+from contextlib import nullcontext as does_not_raise
 from unittest import mock
 
 import pytest
@@ -10,7 +10,7 @@ from .utils import Spec
 @pytest.fixture(
     params=[
         Spec(negative=False, expected=pytest.raises(AssertionError)),
-        Spec(negative=True, expected=nullcontext()),
+        Spec(negative=True, expected=does_not_raise()),
     ],
     ids=["should_not_raise", "should_raise_when_negative"],
 )
@@ -20,7 +20,7 @@ def should_raise(request):
 
 @pytest.fixture(
     params=[
-        Spec(negative=False, expected=nullcontext()),
+        Spec(negative=False, expected=does_not_raise()),
         Spec(negative=True, expected=pytest.raises(AssertionError)),
     ],
     ids=["should_not_raise", "should_raise_when_negative"],

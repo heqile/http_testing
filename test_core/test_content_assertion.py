@@ -1,4 +1,4 @@
-from contextlib import nullcontext
+from contextlib import nullcontext as does_not_raise
 
 from httpx import Client, Response
 
@@ -9,11 +9,11 @@ from .utils import Spec
 
 def test_check_not_raise_when_value_is_none(mock_client: Client, mock_response: Response):
     checker = _ContentChecker(value=None)
-    with nullcontext():
+    with does_not_raise():
         # negative = False
         checker.check(http_client=mock_client, response=mock_response, negative=False)
 
-    with nullcontext():
+    with does_not_raise():
         # negative = True
         checker.check(http_client=mock_client, response=mock_response, negative=True)
 
