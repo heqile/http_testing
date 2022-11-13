@@ -17,7 +17,7 @@ class Cookie:
     domain: Optional[str] = None
     path: Optional[str] = None
     secure: Optional[bool] = None
-    expires: Optional[str] = None
+    expires: Optional[int] = None
 
 
 class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
