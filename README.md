@@ -29,7 +29,7 @@ from http_testing.assertion_elements.cookies_assertion import Cookie
 from http_testing.assertions import Assertions, NegativeAssertions
 from http_testing.page_checker import PageChecker
 
-host = "www.google.com"  # madatory: used in the `check` fixture
+host = "www.google.com"  # mandatory: used in the `check` fixture
 scheme = "https"  # "https" by default
 port = None  # None by default
 
@@ -55,35 +55,29 @@ def test_scenario_one(check: PageChecker):
 
 ### Run test
 ```bash
-$ pytest --tb=no test  # traceback is disabled because it is not very useful to anayse the functional error
+$ pytest test --tb=no --no-header -v  # traceback is disabled because it is not very useful to anayse the functional error
 ============= test session starts =============
-platform linux -- Python 3.8.10, pytest-7.2.0, pluggy-1.0.0
-rootdir: /home/xxx/workspace/http_testing
-plugins: anyio-3.6.2
-collected 1 items
+collected 1 item
 
-test/test_example.py .                                                                  [100%]
+test/test_example.py::test_scenario_one PASSED
 
-=============  1 passed in 0.22s =============
+============= 1 passed in 0.16s =============
 
 ```
 
 ### Debug
-In case of error, a temporary file will be generated, as shown in the `test summary info`. It is a json file concluding
+In case of error, a temporary file will be generated, as shown in the `short test summary info`. It is a json file concluding
 response content, status code, headers and cookies.
 ```bash
-$ pytest --tb=no test
+$ pytest test --tb=no --no-header -v
 ============= test session starts =============
-platform linux -- Python 3.8.10, pytest-7.2.0, pluggy-1.0.0
-rootdir: /home/qile/workspace/http_testing
-plugins: anyio-3.6.2
 collected 1 item
 
-test/test_example.py F                                                                  [100%]
+test/test_example.py::test_scenario_one FAILED
 
 ============= short test summary info =============
-FAILED test/test_example.py::test_scenario_one - AssertionError: Senario One - 'Content-Typesssssss':'text/html; charset=ISO-8859-1' not found in headers on page 'https://www.google.com/' - please check file '/tmp/tmpx7zb7h16'
-============= 1 failed in 0.25s =============
+FAILED test/test_example.py::test_scenario_one - AssertionError: Senario One - 'Content-Typed':'text/html; charset=ISO-8859-1' not found in headers on page 'https://www.google.com/' - please check file '/tmp/tmptaowd2u5'
+============= 1 failed in 1.22s =============
 
 ```
 
