@@ -18,8 +18,8 @@ class PageChecker:
     def __call__(
         self,
         *,
-        title: str,
         path: str,
+        title: Optional[str] = None,
         base_url: Optional[URL] = None,
         method: str = "GET",
         data: Optional[Dict[str, str]] = None,
@@ -50,7 +50,8 @@ class PageChecker:
                 should_not_find.check_assertions(http_client=self._http_client, response=response)
         except AssertionError as exc:
             file_name = self._dump_response(response=response)
-            msg = f"{title} - {str(exc)} - please check file '{file_name}'"
+            prefix = f"{title} - " if title else ""
+            msg = f"{prefix}{str(exc)} - please check file '{file_name}'"
             raise AssertionError(msg) from exc
 
     @staticmethod
