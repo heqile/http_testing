@@ -67,5 +67,5 @@ class PageChecker:
             "cookies": dict(response.cookies),
         }
         with NamedTemporaryFile(mode="wt", delete=False) as f:
-            json.dump(result, f)
+            json.dump(obj=result, fp=f, indent=4)
             return f.name
