@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest-httptesting"
-version = "0.1.3"
+version = "0.1.4"
 description = "http_testing framework on top of pytest"
 authors = ["HE Qile <mr.qile@gmail.com>"]
 readme = "README.md"
