@@ -8,11 +8,18 @@ from http_testing.page_checker import PageChecker
 
 
 @pytest.fixture
+def base_url(request: FixtureRequest) -> URL:
+    if not hasattr(request.module, "host"):
+        raise ValueError("'host' should be set in test file")
+    host = getattr(request.module, "host")
+    scheme = "https" if not hasattr(request.module, "scheme") else getattr(request.module, "scheme")
+    port = None if not hasattr(request.module, "port") else int(getattr(request.module, "port"))
+    return URL(scheme=scheme, host=host, port=port)
+
+
+@pytest.fixture
 def http_client_config():
-    return HttpClientConfiguration(
-        trust_env=False,
-        verify=False,
-    )
+    return HttpClientConfiguration()
 
 
 @pytest.fixture
@@ -22,10 +29,5 @@ def http_client(http_client_config: HttpClientConfiguration):
 
 
 @pytest.fixture
-def check(request: FixtureRequest, http_client: Client):
-    if not hasattr(request.module, "host"):
-        raise ValueError("'host' should be set in test file")
-    host = getattr(request.module, "host")
-    scheme = "https" if not hasattr(request.module, "scheme") else getattr(request.module, "scheme")
-    port = None if not hasattr(request.module, "port") else int(getattr(request.module, "port"))
-    return PageChecker(http_client=http_client, base_url=URL(scheme=scheme, host=host, port=port))
+def check(http_client: Client, base_url: URL):
+    return PageChecker(http_client=http_client, base_url=base_url)
