@@ -8,9 +8,9 @@ from .page_checker import PageChecker
 
 
 @pytest.fixture
-def base_url(request: FixtureRequest) -> URL:
+def base_url(request: FixtureRequest):
     if not hasattr(request.module, "host"):
-        raise ValueError("'host' should be set in test file")
+        return None
     host = getattr(request.module, "host")
     scheme = "https" if not hasattr(request.module, "scheme") else getattr(request.module, "scheme")
     port = None if not hasattr(request.module, "port") else int(getattr(request.module, "port"))
