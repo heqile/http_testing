@@ -5,6 +5,7 @@ from http.cookiejar import CookieJar
 from httpx import Client, Response
 
 from http_testing.assertion_elements.cookies_assertion import Cookie, _CookiesChecker
+from http_testing.validators import Regex
 
 from .utils import Spec
 
@@ -46,7 +47,18 @@ def test_check_with_same_cookie_name_on_multiple_sites(
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A_on_another_site())
-    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", domain="site_one")])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value="cookie_value_one", domain="site_one")])
+    with should_not_raise.expected:
+        checker.check(http_client=mock_client, response=mock_response, negative=should_not_raise.negative)
+
+
+def test_check_regex_value_with_same_cookie_name_on_multiple_sites(
+    should_not_raise: Spec, mock_client: Client, mock_response: Response
+):
+    mock_client.cookies.jar = CookieJar()
+    mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
+    mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A_on_another_site())
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value=Regex("cookie_value_.*"), domain="site_one")])
     with should_not_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_not_raise.negative)
 
@@ -54,7 +66,7 @@ def test_check_with_same_cookie_name_on_multiple_sites(
 def test_check_with_not_cookie_match_on_same_site(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A_on_another_site())
-    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", domain="site_one")])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value="cookie_value_one", domain="site_one")])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
 
@@ -62,7 +74,7 @@ def test_check_with_not_cookie_match_on_same_site(should_raise: Spec, mock_clien
 def test_check_when_secure_not_match(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
-    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", secure=True)])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value="cookie_value_one", secure=True)])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
 
@@ -70,7 +82,7 @@ def test_check_when_secure_not_match(should_raise: Spec, mock_client: Client, mo
 def test_check_should_raise_when_expiration_not_match(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_client.cookies.jar = CookieJar()
     mock_client.cookies.jar.set_cookie(CookieSuite.cookie_A())
-    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value_pattern="cookie_value_one", expires=1)])
+    checker = _CookiesChecker(value=[Cookie(name="cookie_one", value="cookie_value_one", expires=1)])
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
 

@@ -1,11 +1,11 @@
-import re
 from collections import defaultdict
 from http.cookiejar import Cookie as HttpCookie
-from typing import Mapping, Optional, Sequence
+from typing import Mapping, Optional, Sequence, Union
 
 from attrs import define
 from httpx import Client, Response
 
+from ..validators import Text, Validator
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
 
@@ -13,7 +13,7 @@ from .assertion_attribute_base import AssertionAttributeBase
 @define
 class Cookie:
     name: str
-    value_pattern: str
+    value: Union[str, Validator]
     domain: Optional[str] = None
     path: Optional[str] = None
     secure: Optional[bool] = None
@@ -36,7 +36,7 @@ class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
             if (not is_cookie_exist) ^ negative:
                 raise AssertionError(
                     self._make_message(
-                        info=f"'{cookie.name}':'{cookie.value_pattern}'",
+                        info=f"'{cookie.name}':'{cookie.value}'",
                         check_type="cookies",
                         url=str(response.url),
                         negative=negative,
@@ -59,7 +59,12 @@ class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
                 continue
             if target_cookie.expires is not None and target_cookie.expires != cookie.expires:
                 continue
-            if re.search(target_cookie.value_pattern, cookie.value) is not None:
+            validator: Validator
+            if isinstance(target_cookie.value, str):
+                validator = Text(value=target_cookie.value)
+            else:
+                validator = target_cookie.value
+            if validator.validate(cookie.value):
                 return True
         return False
 
