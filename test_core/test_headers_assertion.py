@@ -4,6 +4,7 @@ from httpx import Client, Response
 from httpx._models import Headers
 
 from http_testing.assertion_elements.headers_assertion import _HeadersChecker
+from http_testing.validators import Regex
 
 from .utils import Spec
 
@@ -29,5 +30,23 @@ def test_check_when_header_match_response(should_not_raise: Spec, mock_client: C
 def test_check_when_header_not_match_response(should_raise: Spec, mock_client: Client, mock_response: Response):
     mock_response.headers = Headers({"SOME-HEADER": "this is the value", "OTHER": "other val"})
     checker = _HeadersChecker(value={"some-HEADER": "value not match"})
+    with should_raise.expected:
+        checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
+
+
+def test_check_with_regex_expected_value_when_header_match_response(
+    should_not_raise: Spec, mock_client: Client, mock_response: Response
+):
+    mock_response.headers = Headers({"SOME-HEADER": "this is the value", "OTHER": "other val"})
+    checker = _HeadersChecker(value={"some-HEADER": Regex(".*value$")})
+    with should_not_raise.expected:
+        checker.check(http_client=mock_client, response=mock_response, negative=should_not_raise.negative)
+
+
+def test_check_with_regex_expected_value_when_header_not_match_response(
+    should_raise: Spec, mock_client: Client, mock_response: Response
+):
+    mock_response.headers = Headers({"SOME-HEADER": "this is the value", "OTHER": "other val"})
+    checker = _HeadersChecker(value={"some-HEADER": Regex(".*not match")})
     with should_raise.expected:
         checker.check(http_client=mock_client, response=mock_response, negative=should_raise.negative)
