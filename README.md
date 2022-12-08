@@ -28,6 +28,7 @@ pip install pytest-httptesting
 from http_testing.assertion_elements.cookies_assertion import Cookie
 from http_testing.assertions import Assertions, NegativeAssertions
 from http_testing.page_checker import PageChecker
+from http_testing.validators import Regex
 
 host = "www.google.com"  # mandatory: used in the `check` fixture
 scheme = "https"  # "https" by default
@@ -42,13 +43,13 @@ def test_scenario_one(check: PageChecker):
             status_code=200,
             content=["<title>Google</title>"],
             headers={"Content-Type": "text/html; charset=ISO-8859-1"},
-            cookies=[Cookie(name="AEC", value_pattern=r".*")],
+            cookies=[Cookie(name="AEC", value=Regex(r".*"))],
         ),
         should_not_find=NegativeAssertions(
             status_code=400,
             content=["groot"],
             headers={"nooooo": ""},
-            cookies=[Cookie(name="nop", value_pattern="a")],
+            cookies=[Cookie(name="nop", value="a")],
         ),
     )
 ```
