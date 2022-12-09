@@ -1,5 +1,5 @@
-from http_testing.assertion_elements.cookies_assertion import Cookie
 from http_testing.assertions import Assertions, NegativeAssertions
+from http_testing.cookie import Cookie
 from http_testing.page_checker import PageChecker
 from http_testing.validators import Regex
 
