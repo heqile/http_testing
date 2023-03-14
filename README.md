@@ -52,7 +52,7 @@ def test_scenario_one(check: PageChecker):
         timeout=10,  # you can pass additional kwargs to httpx request
     )
 
-    assert check.previous_response == 200  # inspect previous response
+    assert check.previous_response.status_code == 200  # inspect previous response
 ```
 
 ### Run test
