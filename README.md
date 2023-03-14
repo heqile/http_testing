@@ -49,8 +49,10 @@ def test_scenario_one(check: PageChecker):
             headers={"nooooo": ""},
             cookies=[Cookie(name="nop", value="a")],
         ),
-        timeout=10, # you can pass any kwargs to httpx request
+        timeout=10,  # you can pass additional kwargs to httpx request
     )
+
+    assert check.previous_response == 200  # inspect previous response
 ```
 
 ### Run test

@@ -12,6 +12,13 @@ from .assertions import Assertions, NegativeAssertions
 class PageChecker:
     _base_url: URL
     _http_client: Client
+    _previous_response: Optional[Response] = None
+
+    @property
+    def previous_response(self) -> Response:
+        if self._previous_response is None:
+            raise RuntimeError("previous_response should be called following a http request")
+        return self._previous_response
 
     def __call__(
         self,
@@ -42,6 +49,7 @@ class PageChecker:
             follow_redirects=follow_redirects,
             **kwargs,
         )
+        self._previous_response = response
         try:
             if should_find:
                 should_find.check_assertions(http_client=self._http_client, response=response)

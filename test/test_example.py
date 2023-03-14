@@ -24,3 +24,5 @@ def test_scenario_one(check: PageChecker):
             cookies=[Cookie(name="nop", value="a")],
         ),
     )
+
+    assert check.previous_response.status_code == 200
