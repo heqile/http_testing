@@ -28,7 +28,7 @@ class PageChecker:
         follow_redirects: bool = False,
         should_find: Optional[Assertions] = None,
         should_not_find: Optional[NegativeAssertions] = None,
-        **_: Any,
+        **kwargs: Any,
     ) -> None:
         """
         Call the target url with given arguments, then verify the response against given rules
@@ -42,6 +42,7 @@ class PageChecker:
             headers=headers,
             cookies=cookies,
             follow_redirects=follow_redirects,
+            **kwargs,
         )
         try:
             if should_find:

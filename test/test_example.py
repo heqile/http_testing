@@ -10,6 +10,7 @@ def test_scenario_one(check: PageChecker):
     check(
         title="Senario One",
         path="/",
+        timeout=1,
         should_find=Assertions(
             status_code=200,
             content=["<title>Google</title>"],
