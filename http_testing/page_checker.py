@@ -2,18 +2,16 @@ import json
 from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Optional
 
+from attrs import define
 from httpx import URL, Client, Response
 
 from .assertions import Assertions, NegativeAssertions
 
 
+@define
 class PageChecker:
     _base_url: URL
     _http_client: Client
-
-    def __init__(self, http_client: Client, base_url: URL):
-        self._base_url = base_url
-        self._http_client = http_client
 
     def __call__(
         self,
