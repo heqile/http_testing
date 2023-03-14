@@ -1,0 +1,17 @@
+{
+    "python.linting.mypyEnabled": true,
+    "python.linting.enabled": true,
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "editor.rulers": [
+        120
+    ],
+    "python.analysis.typeCheckingMode": "off",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--line-length", "120",
+    ]
+}
