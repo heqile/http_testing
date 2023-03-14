@@ -2,7 +2,6 @@
 
 ## Description
 This project aims to help to create e2e tests, by chaining http calls and verifications on target pages.
-IMPORTANT: Since only http calls involved, no javascript will run.
 
 ## Concept
 This project is built on pytest.
@@ -50,6 +49,7 @@ def test_scenario_one(check: PageChecker):
             headers={"nooooo": ""},
             cookies=[Cookie(name="nop", value="a")],
         ),
+        timeout=10, # you can pass any kwargs to httpx request
     )
 ```
 
