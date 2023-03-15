@@ -1,13 +1,23 @@
 from collections import defaultdict
 from http.cookiejar import Cookie as HttpCookie
-from typing import Mapping, Sequence
+from typing import Mapping, Optional, Sequence, Union
 
+from attr import define
 from httpx import Client, Response
 
-from ..cookie import Cookie
 from ..validators import Text, Validator
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
+
+
+@define
+class Cookie:
+    name: str
+    value: Union[str, Validator]
+    domain: Optional[str] = None
+    path: Optional[str] = None
+    secure: Optional[bool] = None
+    expires: Optional[int] = None
 
 
 class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
