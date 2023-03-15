@@ -19,6 +19,7 @@ def base_url(request: FixtureRequest):
 
 @pytest.fixture
 def http_client_config():
+    # deprecated
     return HttpClientConfiguration()
 
 
