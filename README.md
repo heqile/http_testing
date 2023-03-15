@@ -85,16 +85,12 @@ FAILED test/test_example.py::test_scenario_one - AssertionError: Senario One - '
 
 ### Advanced
 #### Customize the http client configuration
-It is possible to create a fixture `http_client_config` to override the default configuration, like adding headers and cookies to the http client.
+It is possible to create a fixture `http_client` to create your own http client.
 ```python
 @pytest.fixture
-def http_client_config():
-    return HttpClientConfiguration(
-        trust_env=False,
-        verify=False,
-        cookies={"cookie_1": "cookie_value_1"},
-        headers={"header_1": "header_value_1"},
-    )
+def http_client():
+    with Client(verify=False, cookies={"cookie_1": "cookie_value_1"}) as client:
+        yield client
 ```
 
 #### Customize the base url
