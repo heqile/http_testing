@@ -2,7 +2,6 @@
 
 ## Description
 This project aims to help to create e2e tests, by chaining http calls and verifications on target pages.
-IMPORTANT: Since only http calls involved, no javascript will run.
 
 ## Concept
 This project is built on pytest.
@@ -24,9 +23,8 @@ pip install pytest-httptesting
 ### Create test suite
 ```python
 # test/test_example.py
-
-from http_testing.assertion_elements.cookies_assertion import Cookie
 from http_testing.assertions import Assertions, NegativeAssertions
+from http_testing.cookie import Cookie
 from http_testing.page_checker import PageChecker
 from http_testing.validators import Regex
 
@@ -51,7 +49,10 @@ def test_scenario_one(check: PageChecker):
             headers={"nooooo": ""},
             cookies=[Cookie(name="nop", value="a")],
         ),
+        timeout=10,  # you can pass additional kwargs to httpx request
     )
+
+    assert check.previous_response.status_code == 200  # inspect previous response
 ```
 
 ### Run test
@@ -84,16 +85,12 @@ FAILED test/test_example.py::test_scenario_one - AssertionError: Senario One - '
 
 ### Advanced
 #### Customize the http client configuration
-It is possible to create a fixture `http_client_config` to override the default configuration, like adding headers and cookies to the http client.
+It is possible to create a fixture `http_client` to create your own http client.
 ```python
 @pytest.fixture
-def http_client_config():
-    return HttpClientConfiguration(
-        trust_env=False,
-        verify=False,
-        cookies={"cookie_1": "cookie_value_1"},
-        headers={"header_1": "header_value_1"},
-    )
+def http_client():
+    with Client(verify=False, cookies={"cookie_1": "cookie_value_1"}) as client:
+        yield client
 ```
 
 #### Customize the base url

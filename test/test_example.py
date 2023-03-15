@@ -1,5 +1,5 @@
-from http_testing.assertion_elements.cookies_assertion import Cookie
 from http_testing.assertions import Assertions, NegativeAssertions
+from http_testing.cookie import Cookie
 from http_testing.page_checker import PageChecker
 from http_testing.validators import Regex
 
@@ -10,6 +10,7 @@ def test_scenario_one(check: PageChecker):
     check(
         title="Senario One",
         path="/",
+        timeout=1,
         should_find=Assertions(
             status_code=200,
             content=["<title>Google</title>"],
@@ -23,3 +24,5 @@ def test_scenario_one(check: PageChecker):
             cookies=[Cookie(name="nop", value="a")],
         ),
     )
+
+    assert check.previous_response.status_code == 200

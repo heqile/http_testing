@@ -2,18 +2,23 @@ import json
 from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Optional
 
+from attrs import define
 from httpx import URL, Client, Response
 
 from .assertions import Assertions, NegativeAssertions
 
 
+@define
 class PageChecker:
     _base_url: URL
     _http_client: Client
+    _previous_response: Optional[Response] = None
 
-    def __init__(self, http_client: Client, base_url: URL):
-        self._base_url = base_url
-        self._http_client = http_client
+    @property
+    def previous_response(self) -> Response:
+        if self._previous_response is None:
+            raise RuntimeError("previous_response should be called following a http request")
+        return self._previous_response
 
     def __call__(
         self,
@@ -28,7 +33,7 @@ class PageChecker:
         follow_redirects: bool = False,
         should_find: Optional[Assertions] = None,
         should_not_find: Optional[NegativeAssertions] = None,
-        **_: Any,
+        **kwargs: Any,
     ) -> None:
         """
         Call the target url with given arguments, then verify the response against given rules
@@ -42,7 +47,9 @@ class PageChecker:
             headers=headers,
             cookies=cookies,
             follow_redirects=follow_redirects,
+            **kwargs,
         )
+        self._previous_response = response
         try:
             if should_find:
                 should_find.check_assertions(http_client=self._http_client, response=response)

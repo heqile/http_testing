@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pytest-httptesting"
-version = "0.2.0"
+version = "0.3.0"
 description = "http_testing framework on top of pytest"
 authors = ["HE Qile <mr.qile@gmail.com>"]
 readme = "README.md"
@@ -19,8 +19,9 @@ attrs = "^22.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^2.20.0"
-mypy = "^0.990"
+pre-commit = "^3.1.1"
+mypy = "^1.1.1"
+black = "^23.1.0"
 
 [build-system]
 requires = ["poetry-core"]
