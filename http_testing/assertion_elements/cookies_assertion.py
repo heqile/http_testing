@@ -2,7 +2,7 @@ from collections import defaultdict
 from http.cookiejar import Cookie as HttpCookie
 from typing import Mapping, Optional, Sequence, Union
 
-from attr import define
+from attrs import define
 from httpx import Client, Response
 
 from ..validators import Text, Validator
