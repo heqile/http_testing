@@ -14,8 +14,8 @@ include = ["LICENSE"]
 [tool.poetry.dependencies]
 python = "^3.8"
 pytest = "^7.2.0"
-httpx = "^0.23.0"
-attrs = "^22.1.0"
+httpx = "^0.24.0"
+attrs = "^23.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
