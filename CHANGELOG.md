@@ -1,9 +1,10 @@
 # Changelog
 
-## 0.3.2
+## 0.4.0
 - chore: update dependencies
 - chore: export public members from package level
 - chore: use ABC instead of Protocol for Validator class
+- chore: improve message when assert failed
 
 ## 0.3.1
 - chore: update dependencies
