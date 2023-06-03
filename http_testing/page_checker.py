@@ -59,7 +59,7 @@ class PageChecker:
             file_name = self._dump_response(response=response)
             prefix = f"{title} - " if title else ""
             msg = f"{prefix}{str(exc)} - please check file '{file_name}'"
-            raise AssertionError(msg) from exc
+            raise AssertionError(msg) from None
 
     @staticmethod
     def _dump_response(response: Response) -> str:
