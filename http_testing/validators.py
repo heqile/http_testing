@@ -1,12 +1,13 @@
 import re
-from typing import Protocol, Union
+from abc import ABC
+from typing import Union
 
 from attrs import define
 
 
-class Validator(Protocol):
+class Validator(ABC):
     def validate(self, text: str) -> bool:
-        ...
+        raise NotImplementedError
 
 
 @define
