@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2
+- chore: update dependencies
+- chore: export public members from package level
+- chore: use ABC instead of Protocol for Validator class
+
 ## 0.3.1
 - chore: update dependencies
 - chore: add deprecated warning on "http_client_config" fixture
