@@ -1,5 +1,15 @@
 # HTTP_TESTING
 
+<a href="https://github.com/heqile/http_testing/actions?query=branch%3Amain+event%3Apush+" target="_blank">
+    <img src="https://github.com/heqile/http_testing/workflows/Test/badge.svg?event=push&branch=main" alt="Test">
+</a>
+<a href="https://pypi.org/project/pytest-httptesting" target="_blank">
+    <img src="https://img.shields.io/pypi/v/pytest-httptesting?color=%2334D058&label=pypi%20package" alt="Package version">
+</a>
+<a href="https://pypi.org/project/pytest-httptesting" target="_blank">
+    <img src="https://img.shields.io/pypi/pyversions/pytest-httptesting.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+
 ## Description
 This project aims to help to create e2e tests, by chaining http calls and verifications on target pages.
 
