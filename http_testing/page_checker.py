@@ -1,6 +1,6 @@
 import json
 from tempfile import NamedTemporaryFile
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 from attrs import define
 from httpx import URL, Client, Response
@@ -10,7 +10,7 @@ from .assertions import Assertions, NegativeAssertions
 
 @define
 class PageChecker:
-    _base_url: URL
+    _base_url: Union[URL, str]
     _http_client: Client
     _previous_response: Optional[Response] = None
 
@@ -25,7 +25,7 @@ class PageChecker:
         *,
         path: str,
         title: Optional[str] = None,
-        base_url: Optional[URL] = None,
+        base_url: Union[URL, str, None] = None,
         method: str = "GET",
         data: Optional[Dict[str, str]] = None,
         headers: Optional[Dict[str, str]] = None,
@@ -39,7 +39,11 @@ class PageChecker:
         Call the target url with given arguments, then verify the response against given rules
         Return None if success, otherwise raise AssertionError
         """
-        base_url = base_url or self._base_url
+        if base_url is None:
+            base_url = self._base_url
+        if isinstance(base_url, str):
+            base_url = URL(base_url)
+
         response = self._http_client.request(
             method=method,
             url=base_url.copy_with(raw_path=path.encode("ascii")),

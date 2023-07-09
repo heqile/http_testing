@@ -26,3 +26,11 @@ def test_scenario_one(check: PageChecker):
     )
 
     assert check.previous_response.status_code == 200
+
+    check(
+        title="str base url",
+        path="/",
+        base_url="https://github.com/",
+        timeout=1,
+        should_find=Assertions(status_code=200, content=["github"]),
+    )
