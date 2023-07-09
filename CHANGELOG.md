@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+- chore: update dependencies
+- feat: possible to pass str base_url in PageChecker
+
 ## 0.4.0
 - chore: update dependencies
 - chore: export public members from package level
