@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
@@ -10,7 +11,7 @@ from http_testing._assertion_elements.headers_assertion import HeadersAssertion
 from http_testing._assertion_elements.status_code_assertion import StatusCodeAssertion
 
 
-class _AssertionsBase:
+class _AssertionsBase(ABC):
     _negative: bool = False
     status_code = StatusCodeAssertion()
     content = ContentAssertion()

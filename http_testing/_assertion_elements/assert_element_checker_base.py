@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import Generic, Optional, TypeVar
 
 from http_testing._assertion_elements.assertion_data import AssertionData
@@ -5,7 +6,7 @@ from http_testing._assertion_elements.assertion_data import AssertionData
 T = TypeVar("T")
 
 
-class AssertElementCheckerBase(Generic[T]):
+class AssertElementCheckerBase(Generic[T], ABC):
     value: Optional[T]
 
     def __init__(self, value: Optional[T] = None):

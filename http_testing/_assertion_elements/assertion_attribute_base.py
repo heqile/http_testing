@@ -1,3 +1,4 @@
+from abc import ABC
 from typing import ClassVar, Type
 from weakref import WeakKeyDictionary
 
@@ -5,7 +6,7 @@ from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_data import AssertionData
 
 
-class AssertionAttributeBase:
+class AssertionAttributeBase(ABC):
     _checker_type: Type[AssertElementCheckerBase]
     # if the owner instance of the descriptor is deleted, we should also remove the its entry from assertion_instances
     # that's why we use WeakKeyDictionary
