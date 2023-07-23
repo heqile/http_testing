@@ -9,7 +9,7 @@ from .assertion_data import AssertionData, HttpClientCookie
 
 
 class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
-    def check(self, assertion_data: AssertionData, negative: bool = False) -> None:
+    def check(self, assertion_data: AssertionData, negative: bool) -> None:
         if self.value is None:
             return
         for cookie in self.value:

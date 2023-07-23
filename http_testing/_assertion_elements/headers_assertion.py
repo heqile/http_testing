@@ -8,7 +8,7 @@ from .assertion_data import AssertionData
 
 
 class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator]]]):
-    def check(self, assertion_data: AssertionData, negative: bool = False) -> None:
+    def check(self, assertion_data: AssertionData, negative: bool) -> None:
         """
         Check the response's header.
         If the given expected header value is `str`, first convert it to `validators.Text` validator.

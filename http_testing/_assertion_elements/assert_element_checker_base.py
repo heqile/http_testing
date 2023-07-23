@@ -12,7 +12,7 @@ class AssertElementCheckerBase(Generic[T], ABC):
     def __init__(self, value: Optional[T] = None):
         self.value = value
 
-    def check(self, assertion_data: AssertionData, negative: bool = False):
+    def check(self, assertion_data: AssertionData, negative: bool):
         raise NotImplementedError
 
     @staticmethod

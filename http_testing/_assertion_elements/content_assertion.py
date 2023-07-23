@@ -15,7 +15,7 @@ class _ContentChecker(AssertElementCheckerBase[Sequence[Union[str, Validator]]])
     If the given expected value is a `Regex` validator and its flag is 0, override the flag to `re.MULTILINE`
     """
 
-    def check(self, assertion_data: AssertionData, negative: bool = False) -> None:
+    def check(self, assertion_data: AssertionData, negative: bool) -> None:
         if self.value is None:
             return
         for expected in self.value:
