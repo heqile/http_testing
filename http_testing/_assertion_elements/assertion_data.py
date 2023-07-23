@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from http.cookiejar import Cookie as HttpCookie
-from typing import Mapping, Optional, Sequence
+from typing import Mapping, Optional, Sequence, Union
 
 from attrs import frozen
 from httpx import URL, Client, Response
@@ -31,7 +31,7 @@ class HttpClientCookie:
 
 @frozen(kw_only=True)
 class AssertionData:
-    url: URL
+    url: Union[str, URL]
     all_cookies: Mapping[str, Sequence[HttpClientCookie]]
     response_status_code: int
     response_headers: Mapping[str, str]

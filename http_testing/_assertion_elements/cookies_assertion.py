@@ -1,7 +1,5 @@
 from typing import Mapping, Sequence
 
-from httpx import Client, Response
-
 from http_testing._assertion_elements.assertion_data import AssertionData, HttpClientCookie
 from http_testing.cookie import Cookie
 
@@ -11,18 +9,17 @@ from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
-    def check(self, http_client: Client, response: Response, negative: bool = False) -> None:
-        assertion_request = AssertionData.create(response=response, http_client=http_client)
+    def check(self, assertion_data: AssertionData, negative: bool = False) -> None:
         if self.value is None:
             return
         for cookie in self.value:
-            is_cookie_exist = self._is_cookie_match(target_cookie=cookie, all_cookies=assertion_request.all_cookies)
+            is_cookie_exist = self._is_cookie_match(target_cookie=cookie, all_cookies=assertion_data.all_cookies)
             if (not is_cookie_exist) ^ negative:
                 raise AssertionError(
                     self._make_message(
                         info=f"'{cookie.name}':'{cookie.value}'",
                         check_type="cookies",
-                        url=str(assertion_request.url),
+                        url=str(assertion_data.url),
                         negative=negative,
                     )
                 )

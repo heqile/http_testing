@@ -1,7 +1,7 @@
 from typing import ClassVar, Type
 from weakref import WeakKeyDictionary
 
-from httpx import Client, Response
+from http_testing._assertion_elements.assertion_data import AssertionData
 
 from .assert_element_checker_base import AssertElementCheckerBase
 
@@ -29,7 +29,7 @@ class AssertionAttributeBase:
         setattr(instance, self._private_name, checker)
 
 
-def check_all(instance, http_client: Client, response: Response, negative: bool):
+def check_all(instance, assertion_data: AssertionData, negative: bool):
     checker: AssertElementCheckerBase
     for checker in AssertionAttributeBase.checkers[instance]:
-        checker.check(http_client, response, negative)
+        checker.check(assertion_data=assertion_data, negative=negative)

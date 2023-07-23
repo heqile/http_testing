@@ -1,8 +1,8 @@
 from contextlib import nullcontext as does_not_raise
-from unittest import mock
 
 import pytest
-from httpx import Client, Response
+
+from http_testing._assertion_elements.assertion_data import AssertionData
 
 from .utils import Spec
 
@@ -30,13 +30,7 @@ def should_not_raise(request):
 
 
 @pytest.fixture
-def mock_client():
-    return mock.MagicMock(spec=Client, auto_spec=True)
-
-
-@pytest.fixture
-def mock_response():
-    mock_client = mock.MagicMock(spec=Response, auto_spec=True)
-    mock_client.headers = {}
-    mock_client.status_code = 200
-    return mock_client
+def fake_assertion_data():
+    return AssertionData(
+        url="http://test/", all_cookies={}, response_status_code=200, response_headers={}, response_text="from test"
+    )

@@ -1,6 +1,6 @@
 from typing import Generic, Optional, TypeVar
 
-from httpx import Client, Response
+from http_testing._assertion_elements.assertion_data import AssertionData
 
 T = TypeVar("T")
 
@@ -11,7 +11,7 @@ class AssertElementCheckerBase(Generic[T]):
     def __init__(self, value: Optional[T] = None):
         self.value = value
 
-    def check(self, http_client: Client, response: Response, negative: bool = False):
+    def check(self, assertion_data: AssertionData, negative: bool = False):
         raise NotImplementedError
 
     @staticmethod
