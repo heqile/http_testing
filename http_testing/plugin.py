@@ -1,12 +1,7 @@
-from typing import Any, Mapping, Optional
-from warnings import warn
-
-import attrs
 import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
 
-from .http_client_configuration import HttpClientConfiguration
 from .page_checker import PageChecker
 
 
@@ -21,19 +16,8 @@ def base_url(request: FixtureRequest):
 
 
 @pytest.fixture
-def http_client_config():
-    # deprecated
-    return None
-
-
-@pytest.fixture
-def http_client(http_client_config: Optional[HttpClientConfiguration]):
-    config: Mapping[str, Any] = {}
-    if http_client_config is not None:
-        warn("'http_client_config' fixture is deprecated")
-        config = attrs.asdict(http_client_config)
-
-    with Client(**config) as client:
+def http_client():
+    with Client() as client:
         yield client
 
 
