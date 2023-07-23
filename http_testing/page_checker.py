@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional, Union
 from attrs import define
 from httpx import URL, Client, Response
 
-from .assertions import Assertions, NegativeAssertions
+from http_testing.assertions import Assertions, NegativeAssertions
 
 
 @define

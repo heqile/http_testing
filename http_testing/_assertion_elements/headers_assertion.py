@@ -1,10 +1,10 @@
 from typing import Mapping, Union
 
-from http_testing._assertion_elements.assertion_data import AssertionData
+from http_testing.validators import Text, Validator
 
-from ..validators import Text, Validator
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
+from .assertion_data import AssertionData
 
 
 class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator]]]):

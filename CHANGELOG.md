@@ -1,7 +1,9 @@
 # Changelog
 
-## 0.5.1
+## 0.6.0
+- BREAKING CHANGE: remove HttpClientConfiguration
 - chore: update dependencies
+- refactor: internal classes
 
 ## 0.5.0
 - chore: update dependencies

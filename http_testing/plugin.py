@@ -2,7 +2,7 @@ import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
 
-from .page_checker import PageChecker
+from http_testing.page_checker import PageChecker
 
 
 @pytest.fixture

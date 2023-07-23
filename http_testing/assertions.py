@@ -2,13 +2,12 @@ from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
 
+from http_testing._assertion_elements.assertion_attribute_base import check_all
 from http_testing._assertion_elements.assertion_data import AssertionData
-
-from ._assertion_elements.assertion_attribute_base import check_all
-from ._assertion_elements.content_assertion import ContentAssertion
-from ._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
-from ._assertion_elements.headers_assertion import HeadersAssertion
-from ._assertion_elements.status_code_assertion import StatusCodeAssertion
+from http_testing._assertion_elements.content_assertion import ContentAssertion
+from http_testing._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
+from http_testing._assertion_elements.headers_assertion import HeadersAssertion
+from http_testing._assertion_elements.status_code_assertion import StatusCodeAssertion
 
 
 class _AssertionsBase:

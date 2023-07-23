@@ -1,9 +1,8 @@
 from typing import ClassVar, Type
 from weakref import WeakKeyDictionary
 
-from http_testing._assertion_elements.assertion_data import AssertionData
-
 from .assert_element_checker_base import AssertElementCheckerBase
+from .assertion_data import AssertionData
 
 
 class AssertionAttributeBase:
