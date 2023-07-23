@@ -2,7 +2,7 @@ from contextlib import nullcontext as does_not_raise
 
 from httpx import Client, Response
 
-from http_testing.assertion_elements.status_code_assertion import _StatusCodeChecker
+from http_testing._assertion_elements.status_code_assertion import _StatusCodeChecker
 
 from .utils import Spec
 

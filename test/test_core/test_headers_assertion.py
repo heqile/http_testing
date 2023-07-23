@@ -3,7 +3,7 @@ from contextlib import nullcontext as does_not_raise
 from httpx import Client, Response
 from httpx._models import Headers
 
-from http_testing.assertion_elements.headers_assertion import _HeadersChecker
+from http_testing._assertion_elements.headers_assertion import _HeadersChecker
 from http_testing.validators import Regex
 
 from .utils import Spec

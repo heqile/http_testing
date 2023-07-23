@@ -3,6 +3,8 @@ from typing import Sequence, Union
 
 from httpx import Client, Response
 
+from http_testing._assertion_elements.assertion_data import AssertionData
+
 from ..validators import Regex, Text, Validator
 from .assert_element_checker_base import AssertElementCheckerBase
 from .assertion_attribute_base import AssertionAttributeBase
@@ -16,6 +18,7 @@ class _ContentChecker(AssertElementCheckerBase[Sequence[Union[str, Validator]]])
     """
 
     def check(self, http_client: Client, response: Response, negative: bool = False) -> None:
+        assertion_request = AssertionData.create(response=response, http_client=http_client)
         if self.value is None:
             return
         for expected in self.value:
@@ -30,10 +33,10 @@ class _ContentChecker(AssertElementCheckerBase[Sequence[Union[str, Validator]]])
             else:
                 validator = expected
 
-            if (not validator.validate(text=response.text)) ^ negative:
+            if (not validator.validate(text=assertion_request.response_text)) ^ negative:
                 raise AssertionError(
                     self._make_message(
-                        info=f"'{self.value}'", check_type="content", url=str(response.url), negative=negative
+                        info=f"'{self.value}'", check_type="content", url=str(assertion_request.url), negative=negative
                     )
                 )
 

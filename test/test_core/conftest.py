@@ -36,4 +36,7 @@ def mock_client():
 
 @pytest.fixture
 def mock_response():
-    return mock.MagicMock(spec=Response, auto_spec=True)
+    mock_client = mock.MagicMock(spec=Response, auto_spec=True)
+    mock_client.headers = {}
+    mock_client.status_code = 200
+    return mock_client

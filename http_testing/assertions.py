@@ -2,11 +2,11 @@ from typing import Mapping, Optional, Sequence
 
 from httpx import Client, Response
 
-from .assertion_elements.assertion_attribute_base import check_all
-from .assertion_elements.content_assertion import ContentAssertion
-from .assertion_elements.cookies_assertion import Cookie, CookiesAssertion
-from .assertion_elements.headers_assertion import HeadersAssertion
-from .assertion_elements.status_code_assertion import StatusCodeAssertion
+from ._assertion_elements.assertion_attribute_base import check_all
+from ._assertion_elements.content_assertion import ContentAssertion
+from ._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
+from ._assertion_elements.headers_assertion import HeadersAssertion
+from ._assertion_elements.status_code_assertion import StatusCodeAssertion
 
 
 class _AssertionsBase:

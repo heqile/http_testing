@@ -1,3 +1,15 @@
-from .assertion_elements.cookies_assertion import Cookie
+from typing import Optional, Union
 
-__all__ = ["Cookie"]
+from attrs import define
+
+from http_testing.validators import Validator
+
+
+@define
+class Cookie:
+    name: str
+    value: Union[str, Validator]
+    domain: Optional[str] = None
+    path: Optional[str] = None
+    secure: Optional[bool] = None
+    expires: Optional[int] = None
