@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1
+- chore: update dependencies
+
 ## 0.5.0
 - chore: update dependencies
 - feat: possible to pass str base_url in PageChecker
