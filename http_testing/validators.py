@@ -1,11 +1,12 @@
 import re
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Union
 
 from attrs import define
 
 
 class Validator(ABC):
+    @abstractmethod
     def validate(self, text: str) -> bool:
         raise NotImplementedError
 

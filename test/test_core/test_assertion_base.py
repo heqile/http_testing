@@ -1,9 +1,11 @@
 from http_testing._assertion_elements.assert_element_checker_base import AssertElementCheckerBase
 from http_testing._assertion_elements.assertion_attribute_base import AssertionAttributeBase
+from http_testing._assertion_elements.assertion_data import AssertionData
 
 
 class SampleAssertElement(AssertElementCheckerBase):
-    ...
+    def check(self, assertion_data: AssertionData, negative: bool):
+        return None
 
 
 class SampleAssertion(AssertionAttributeBase):

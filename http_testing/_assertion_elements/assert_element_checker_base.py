@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Generic, Optional, TypeVar
 
 from http_testing._assertion_elements.assertion_data import AssertionData
@@ -12,6 +12,7 @@ class AssertElementCheckerBase(Generic[T], ABC):
     def __init__(self, value: Optional[T] = None):
         self.value = value
 
+    @abstractmethod
     def check(self, assertion_data: AssertionData, negative: bool):
         raise NotImplementedError
 
