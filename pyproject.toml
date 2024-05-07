@@ -30,3 +30,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."pytest11"]
 "http_page_checker" = "http_testing.plugin"
+
+[tool.ruff]
+line-length = 120
