@@ -24,10 +24,20 @@ def test_check_not_raise_when_value_is_none(fake_assertion_data: AssertionData):
 @pytest.mark.parametrize(
     "response_text, check_value",
     [
-        pytest.param("some test \n value in response", ["test \n value"], id="text_value_match_response_content"),
+        pytest.param(
+            "some test \n value in response",
+            ["test \n value"],
+            id="text_value_match_response_content_with_list_assertion_data",
+        ),
         pytest.param(
             "some test \n value in response",
             [Regex(pattern="test.*\n.*value")],
+            id="regex_value_match_response_content_with_list_assertion_data",
+        ),
+        pytest.param("some test \n value in response", "test \n value", id="text_value_match_response_content"),
+        pytest.param(
+            "some test \n value in response",
+            Regex(pattern="test.*\n.*value"),
             id="regex_value_match_response_content",
         ),
     ],

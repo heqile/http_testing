@@ -1,41 +1,38 @@
 repos:
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v4.6.0
-      hooks:
-          - id: trailing-whitespace
-          - id: end-of-file-fixer
-    - repo: https://github.com/PyCQA/autoflake
-      rev: v2.3.1
-      hooks:
-          - id: autoflake
-            args: ["--remove-all-unused-imports", "--in-place"]
-    - repo: https://github.com/Lucas-C/pre-commit-hooks-bandit
-      rev: v1.0.6
-      hooks:
-          - id: python-bandit-vulnerability-check
-            args: [-lll, --recursive, web_app]
-    - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
-      rev: v1.3.3
-      hooks:
-          - id: python-safety-dependencies-check
-            files: pyproject.toml
-    - repo: local
-      hooks:
-          - id: mypy
-            name: mypy
-            entry: mypy
-            language: python
-            "types_or": [python, pyi]
-            args: ["--ignore-missing-imports", "--scripts-are-modules"]
-    - repo: https://github.com/astral-sh/ruff-pre-commit
-      # Ruff version.
-      rev: v0.4.3
-      hooks:
-          # Run the linter.
-          - id: ruff
-            name: ruff-lint
-          # Run the formatter.
-          - id: ruff
-            name: ruff-sort-import
-            args: [--select, I, --fix]
-          - id: ruff-format
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      - id: autoflake
+        args: ["--remove-all-unused-imports", "--in-place"]
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-bandit
+    rev: v1.0.6
+    hooks:
+      - id: python-bandit-vulnerability-check
+        args: [-lll, --recursive, web_app]
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        files: pyproject.toml
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+        additional_dependencies: ["attrs"]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Ruff version.
+    rev: v0.4.3
+    hooks:
+      # Run the linter.
+      - id: ruff
+        name: ruff-lint
+      # Run the formatter.
+      - id: ruff
+        name: ruff-sort-import
+        args: [--select, I, --fix]
+      - id: ruff-format

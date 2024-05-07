@@ -8,7 +8,7 @@ from .assertion_attribute_base import AssertionAttributeBase
 from .assertion_data import AssertionData
 
 
-class _ContentChecker(AssertElementCheckerBase[Sequence[Union[str, Validator]]]):
+class _ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Union[str, Validator]]]]):
     """
     Check the response's content.
     If the given expected value is `str`, first convert it to `validators.Text` validator.
@@ -18,7 +18,8 @@ class _ContentChecker(AssertElementCheckerBase[Sequence[Union[str, Validator]]])
     def check(self, assertion_data: AssertionData, negative: bool) -> None:
         if self.value is None:
             return
-        for expected in self.value:
+        rules = [self.value] if isinstance(self.value, (str, Validator)) else self.value
+        for expected in rules:
             validator: Validator
             if isinstance(expected, str):
                 validator = Text(value=expected)

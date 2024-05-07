@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Mapping, Optional, Sequence
+from typing import Mapping, Optional, Sequence, Union
 
 from httpx import Client, Response
 
@@ -9,6 +9,7 @@ from http_testing._assertion_elements.content_assertion import ContentAssertion
 from http_testing._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
 from http_testing._assertion_elements.headers_assertion import HeadersAssertion
 from http_testing._assertion_elements.status_code_assertion import StatusCodeAssertion
+from http_testing.validators import Validator
 
 
 class _AssertionsBase(ABC):
@@ -21,7 +22,7 @@ class _AssertionsBase(ABC):
     def __init__(
         self,
         status_code: Optional[int] = None,
-        content: Optional[Sequence[str]] = None,
+        content: Union[None, str, Validator, Sequence[Union[str, Validator]]] = None,
         headers: Optional[Mapping[str, str]] = None,
         cookies: Optional[Sequence[Cookie]] = None,
     ):

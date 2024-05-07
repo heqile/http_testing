@@ -13,7 +13,7 @@ def test_scenario_one(check: PageChecker):
         timeout=1,
         should_find=Assertions(
             status_code=200,
-            content=["<title>Google</title>"],
+            content="<title>Google</title>",
             headers={"Content-Type": "text/html; charset=ISO-8859-1"},
             cookies=[Cookie(name="AEC", value=Regex(r".*"))],
         ),

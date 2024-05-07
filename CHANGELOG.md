@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+- feat: possible to pass string when check content
+- chore: update dependencies
+
 ## 0.6.0
 - BREAKING CHANGE: remove HttpClientConfiguration
 - chore: update dependencies
