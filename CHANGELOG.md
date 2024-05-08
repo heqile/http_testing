@@ -3,6 +3,7 @@
 ## 0.7.0
 - feat: possible to pass string when check content
 - chore: update dependencies
+- chore: add py.typed file
 
 ## 0.6.0
 - BREAKING CHANGE: remove HttpClientConfiguration

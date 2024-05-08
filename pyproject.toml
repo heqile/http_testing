@@ -4,7 +4,10 @@ version = "0.7.0"
 description = "http_testing framework on top of pytest"
 authors = ["HE Qile <mr.qile@gmail.com>"]
 readme = "README.md"
-packages = [{include = "http_testing"}]
+packages = [
+    {include = "http_testing"},
+    {include = "http_testing/py.typed"},
+]
 
 homepage = "https://github.com/heqile/http_testing"
 repository = "https://github.com/heqile/http_testing"
