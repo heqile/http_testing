@@ -45,7 +45,7 @@ port = None  # None by default
 
 def test_scenario_one(check: PageChecker):
     check(
-        title="Senario One",
+        title="Scenario One",
         path="/",
         should_find=Assertions(
             status_code=200,
@@ -88,7 +88,7 @@ collected 1 item
 test/test_example.py::test_scenario_one FAILED
 
 ============= short test summary info =============
-FAILED test/test_example.py::test_scenario_one - AssertionError: Senario One - 'Content-Typessss':'text/html; charset=ISO-8859-1' not found in headers on page 'https://www.google.com/' - please check file '/tmp/tmptaowd2u5'
+FAILED test/test_example.py::test_scenario_one - AssertionError: Scenario One - 'Content-Typessss':'text/html; charset=ISO-8859-1' not found in headers on page 'https://www.google.com/' - please check file '/tmp/tmptaowd2u5'
 ============= 1 failed in 1.22s =============
 
 ```
