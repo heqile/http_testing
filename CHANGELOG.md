@@ -1,4 +1,6 @@
 # Changelog
+## 0.8.0 (Unreleased)
+- chore: update dependencies
 
 ## 0.7.0
 - feat: possible to pass string when check content
