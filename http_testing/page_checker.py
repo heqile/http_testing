@@ -27,7 +27,7 @@ class PageChecker:
         title: Optional[str] = None,
         base_url: Union[URL, str, None] = None,
         method: str = "GET",
-        data: Optional[Dict[str, str]] = None,
+        data: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, str]] = None,
         cookies: Optional[Dict[str, str]] = None,
         follow_redirects: bool = False,
