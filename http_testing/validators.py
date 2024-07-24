@@ -20,6 +20,9 @@ class Regex(Validator):
     pattern: str
     flags: Union[int, re.RegexFlag] = 0
 
+    def __str__(self) -> str:
+        return f"pattern({self.pattern}) with flags({self.flags})"
+
     def validate(self, text: str) -> bool:
         return re.search(self.pattern, text, flags=self.flags) is not None
 
@@ -31,6 +34,9 @@ class Text(Validator):
     """
 
     value: str
+
+    def __str__(self):
+        return f"{self.value}"
 
     def validate(self, text: str) -> bool:
         return self.value in text

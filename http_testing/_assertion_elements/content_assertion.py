@@ -15,9 +15,9 @@ class _ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Un
     If the given expected value is a `Regex` validator and its flag is 0, override the flag to `re.MULTILINE`
     """
 
-    def check(self, assertion_data: AssertionData, negative: bool) -> None:
+    def __contains__(self, assertion_data: AssertionData) -> bool:
         if self.value is None:
-            return
+            return True
         rules = [self.value] if isinstance(self.value, (str, Validator)) else self.value
         for expected in rules:
             validator: Validator
@@ -31,12 +31,15 @@ class _ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Un
             else:
                 validator = expected
 
-            if (not validator.validate(text=assertion_data.response_text)) ^ negative:
-                raise AssertionError(
-                    self._make_message(
-                        info=f"'{self.value}'", check_type="content", url=str(assertion_data.url), negative=negative
-                    )
+            if (not validator.validate(text=assertion_data.response_text)) ^ assertion_data.negative_assertion:
+                self.assert_fail_description = self._make_message(
+                    info=f"'{validator}'",
+                    check_type="content",
+                    url=str(assertion_data.url),
+                    negative=assertion_data.negative_assertion,
                 )
+                return False
+        return True
 
 
 class ContentAssertion(AssertionAttributeBase):

@@ -8,13 +8,13 @@ from .assertion_data import AssertionData
 
 
 class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator]]]):
-    def check(self, assertion_data: AssertionData, negative: bool) -> None:
+    def __contains__(self, assertion_data: AssertionData) -> bool:
         """
         Check the response's header.
         If the given expected header value is `str`, first convert it to `validators.Text` validator.
         """
         if self.value is None:
-            return
+            return True
         for header_key, expected_header_value in self.value.items():
             header_key = header_key.upper()
             validator: Validator
@@ -25,15 +25,15 @@ class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator
             is_header_not_found = header_key not in assertion_data.response_headers or not validator.validate(
                 assertion_data.response_headers[header_key]
             )
-            if is_header_not_found ^ negative:
-                raise AssertionError(
-                    self._make_message(
-                        info=f"'{header_key}':'{expected_header_value}'",
-                        check_type="headers",
-                        url=str(assertion_data.url),
-                        negative=negative,
-                    )
+            if is_header_not_found ^ assertion_data.negative_assertion:
+                self.assert_fail_description = self._make_message(
+                    info=f"'{header_key}':'{expected_header_value}'",
+                    check_type="headers",
+                    url=str(assertion_data.url),
+                    negative=assertion_data.negative_assertion,
                 )
+                return False
+        return True
 
 
 class HeadersAssertion(AssertionAttributeBase):

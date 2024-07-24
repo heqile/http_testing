@@ -1,3 +1,8 @@
+import pytest
+
+pytest.register_assert_rewrite("http_testing.plugin", "http_testing.assertions")
+
+# ruff: noqa: E402
 from ._assertion_elements.content_assertion import ContentAssertion
 from ._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
 from ._assertion_elements.headers_assertion import HeadersAssertion

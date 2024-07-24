@@ -32,5 +32,10 @@ def should_not_raise(request):
 @pytest.fixture
 def fake_assertion_data():
     return AssertionData(
-        url="http://test/", all_cookies={}, response_status_code=200, response_headers={}, response_text="from test"
+        url="http://test/",
+        all_cookies={},
+        response_status_code=200,
+        response_headers={},
+        response_text="from test",
+        negative_assertion=False,
     )

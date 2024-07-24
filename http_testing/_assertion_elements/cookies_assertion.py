@@ -9,20 +9,20 @@ from .assertion_data import AssertionData, HttpClientCookie
 
 
 class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
-    def check(self, assertion_data: AssertionData, negative: bool) -> None:
+    def __contains__(self, assertion_data: AssertionData) -> bool:
         if self.value is None:
-            return
+            return True
         for cookie in self.value:
             is_cookie_exist = self._is_cookie_match(target_cookie=cookie, all_cookies=assertion_data.all_cookies)
-            if (not is_cookie_exist) ^ negative:
-                raise AssertionError(
-                    self._make_message(
-                        info=f"'{cookie.name}':'{cookie.value}'",
-                        check_type="cookies",
-                        url=str(assertion_data.url),
-                        negative=negative,
-                    )
+            if (not is_cookie_exist) ^ assertion_data.negative_assertion:
+                self.assert_fail_description = self._make_message(
+                    info=f"'{cookie.name}':'{cookie.value}'",
+                    check_type="cookies",
+                    url=str(assertion_data.url),
+                    negative=assertion_data.negative_assertion,
                 )
+                return False
+        return True
 
     @staticmethod
     def _is_cookie_match(target_cookie: Cookie, all_cookies: Mapping[str, Sequence[HttpClientCookie]]):

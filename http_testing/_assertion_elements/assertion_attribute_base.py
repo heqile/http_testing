@@ -29,7 +29,7 @@ class AssertionAttributeBase(ABC):
         setattr(instance, self._private_name, checker)
 
 
-def check_all(instance, assertion_data: AssertionData, negative: bool):
+def check_all(instance, assertion_data: AssertionData):
     checker: AssertElementCheckerBase
     for checker in AssertionAttributeBase.checkers[instance]:
-        checker.check(assertion_data=assertion_data, negative=negative)
+        assert assertion_data in checker

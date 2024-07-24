@@ -2,6 +2,8 @@ import pytest
 from httpx import URL, Client
 from pytest import FixtureRequest
 
+from http_testing._assertion_elements.assert_element_checker_base import AssertElementCheckerBase
+from http_testing._assertion_elements.assertion_data import AssertionData
 from http_testing.page_checker import PageChecker
 
 
@@ -24,3 +26,9 @@ def http_client():
 @pytest.fixture
 def check(http_client: Client, base_url: URL):
     return PageChecker(http_client=http_client, base_url=base_url)
+
+
+def pytest_assertrepr_compare(config, op, left, right):
+    if isinstance(left, AssertionData) and isinstance(right, AssertElementCheckerBase) and op == "in":
+        return [right.assert_fail_description]
+    return None

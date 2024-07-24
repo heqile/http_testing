@@ -5,17 +5,18 @@ from .assertion_attribute_base import AssertionAttributeBase
 
 
 class _StatusCodeChecker(AssertElementCheckerBase[int]):
-    def check(self, assertion_data: AssertionData, negative: bool) -> None:
-        if self.value:
-            if (self.value != assertion_data.response_status_code) ^ negative:
-                raise AssertionError(
-                    self._make_message(
-                        info=f"'{self.value}'",
-                        check_type="status_code",
-                        url=str(assertion_data.url),
-                        negative=negative,
-                    )
-                )
+    def __contains__(self, assertion_data: AssertionData) -> bool:
+        if not self.value:
+            return True
+        if (self.value != assertion_data.response_status_code) ^ assertion_data.negative_assertion:
+            self.assert_fail_description = self._make_message(
+                info=f"'{self.value}'",
+                check_type="status_code",
+                url=str(assertion_data.url),
+                negative=assertion_data.negative_assertion,
+            )
+            return False
+        return True
 
 
 class StatusCodeAssertion(AssertionAttributeBase):

@@ -54,16 +54,11 @@ class PageChecker:
             **kwargs,
         )
         self._previous_response = response
-        try:
-            if should_find:
-                should_find.check_assertions(http_client=self._http_client, response=response)
-            if should_not_find:
-                should_not_find.check_assertions(http_client=self._http_client, response=response)
-        except AssertionError as exc:
-            file_name = self._dump_response(response=response)
-            prefix = f"{title} - " if title else ""
-            msg = f"{prefix}{str(exc)} - please check file '{file_name}'"
-            raise AssertionError(msg) from None
+
+        if should_find:
+            should_find.check_assertions(http_client=self._http_client, response=response)
+        if should_not_find:
+            should_not_find.check_assertions(http_client=self._http_client, response=response)
 
     @staticmethod
     def _dump_response(response: Response) -> str:

@@ -48,10 +48,12 @@ class CookieSuite:
     ],
 )
 def test_check_not_raise(should_not_raise: Spec, fake_assertion_data: AssertionData, all_cookies, check_cookies):
-    assertion_data = evolve(fake_assertion_data, all_cookies=all_cookies)
     checker = _CookiesChecker(value=check_cookies)
     with should_not_raise.expected:
-        checker.check(assertion_data=assertion_data, negative=should_not_raise.negative)
+        assert (
+            evolve(fake_assertion_data, all_cookies=all_cookies, negative_assertion=should_not_raise.negative)
+            in checker
+        )
 
 
 @pytest.mark.parametrize(
@@ -77,18 +79,17 @@ def test_check_not_raise(should_not_raise: Spec, fake_assertion_data: AssertionD
 def test_check_with_not_cookie_match_on_same_site(
     should_raise: Spec, fake_assertion_data: AssertionData, all_cookies, check_cookies
 ):
-    assertion_data = evolve(fake_assertion_data, all_cookies=all_cookies)
     checker = _CookiesChecker(value=check_cookies)
     with should_raise.expected:
-        checker.check(assertion_data=assertion_data, negative=should_raise.negative)
+        assert evolve(fake_assertion_data, all_cookies=all_cookies, negative_assertion=should_raise.negative) in checker
 
 
 def test_check_not_raise_when_value_is_none(fake_assertion_data: AssertionData):
     checker = _CookiesChecker(value=None)
     with does_not_raise():
         # negative = False
-        checker.check(assertion_data=fake_assertion_data, negative=False)
+        assert evolve(fake_assertion_data, negative_assertion=False) in checker
 
     with does_not_raise():
         # negative = True
-        checker.check(assertion_data=fake_assertion_data, negative=True)
+        assert evolve(fake_assertion_data, negative_assertion=True) in checker

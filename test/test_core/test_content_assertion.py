@@ -14,11 +14,11 @@ def test_check_not_raise_when_value_is_none(fake_assertion_data: AssertionData):
     checker = _ContentChecker(value=None)
     with does_not_raise():
         # negative = False
-        checker.check(assertion_data=fake_assertion_data, negative=False)
+        assert evolve(fake_assertion_data, negative_assertion=False) in checker
 
     with does_not_raise():
         # negative = True
-        checker.check(assertion_data=fake_assertion_data, negative=True)
+        assert evolve(fake_assertion_data, negative_assertion=True) in checker
 
 
 @pytest.mark.parametrize(
@@ -43,10 +43,12 @@ def test_check_not_raise_when_value_is_none(fake_assertion_data: AssertionData):
     ],
 )
 def test_check_not_raise(should_not_raise: Spec, fake_assertion_data: AssertionData, response_text, check_value):
-    assertion_data = evolve(fake_assertion_data, response_text=response_text)
     checker = _ContentChecker(value=check_value)
     with should_not_raise.expected:
-        checker.check(assertion_data=assertion_data, negative=should_not_raise.negative)
+        assert (
+            evolve(fake_assertion_data, response_text=response_text, negative_assertion=should_not_raise.negative)
+            in checker
+        )
 
 
 @pytest.mark.parametrize(
@@ -65,7 +67,13 @@ def test_check_not_raise(should_not_raise: Spec, fake_assertion_data: AssertionD
 def test_check_when_text_value_not_match_response_content(
     should_raise: Spec, fake_assertion_data: AssertionData, response_text, check_value
 ):
-    assertion_data = evolve(fake_assertion_data, response_text="some test value in response")
     checker = _ContentChecker(value=["test not existing value"])
     with should_raise.expected:
-        checker.check(assertion_data=assertion_data, negative=should_raise.negative)
+        assert (
+            evolve(
+                fake_assertion_data,
+                response_text="some test value in response",
+                negative_assertion=should_raise.negative,
+            )
+            in checker
+        )

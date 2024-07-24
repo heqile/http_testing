@@ -4,8 +4,8 @@ from http_testing._assertion_elements.assertion_data import AssertionData
 
 
 class SampleAssertElement(AssertElementCheckerBase):
-    def check(self, assertion_data: AssertionData, negative: bool):
-        return None
+    def __contains__(self, assertion_data: AssertionData) -> bool:
+        return True
 
 
 class SampleAssertion(AssertionAttributeBase):

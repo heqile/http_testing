@@ -36,9 +36,10 @@ class AssertionData:
     response_status_code: int
     response_headers: Mapping[str, str]
     response_text: str
+    negative_assertion: bool
 
     @staticmethod
-    def create(http_client: Client, response: Response) -> AssertionData:
+    def create(http_client: Client, response: Response, negative: bool) -> AssertionData:
         # same cookie name can be on different sites, so use dict to group cookies list by name
         all_cookies = defaultdict(list)
         for cookie in http_client.cookies.jar:
@@ -51,4 +52,5 @@ class AssertionData:
             response_headers={key.upper(): value for key, value in response.headers.items()},
             response_status_code=response.status_code,
             response_text=response.text,
+            negative_assertion=negative,
         )

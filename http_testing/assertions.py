@@ -3,7 +3,7 @@ from typing import Mapping, Optional, Sequence, Union
 
 from httpx import Client, Response
 
-from http_testing._assertion_elements.assertion_attribute_base import check_all
+from http_testing._assertion_elements.assertion_attribute_base import AssertionAttributeBase
 from http_testing._assertion_elements.assertion_data import AssertionData
 from http_testing._assertion_elements.content_assertion import ContentAssertion
 from http_testing._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
@@ -32,8 +32,9 @@ class _AssertionsBase(ABC):
         self.cookies = cookies
 
     def check_assertions(self, http_client: Client, response: Response) -> None:
-        assertion_data = AssertionData.create(response=response, http_client=http_client)
-        check_all(instance=self, assertion_data=assertion_data, negative=self._negative)
+        assertion_data = AssertionData.create(response=response, http_client=http_client, negative=self._negative)
+        for checker in AssertionAttributeBase.checkers[self]:
+            assert assertion_data in checker
 
 
 class Assertions(_AssertionsBase):
