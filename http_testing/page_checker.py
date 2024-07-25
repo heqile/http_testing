@@ -1,9 +1,11 @@
-from typing import Any, Dict, Optional, Union
+import secrets
+from typing import Any, Dict, List, Optional, Union
 
-from attrs import define
+from attrs import define, field
 from httpx import URL, Client, Response
 
 from http_testing._assertion_elements.assertion_data import AssertionData
+from http_testing._record import RecordData
 from http_testing.assertions import Assertions, NegativeAssertions
 
 
@@ -11,13 +13,13 @@ from http_testing.assertions import Assertions, NegativeAssertions
 class PageChecker:
     _base_url: Union[URL, str]
     _http_client: Client
-    _previous_response: Optional[Response] = None
+    history: List[RecordData] = field(factory=list)
 
     @property
     def previous_response(self) -> Response:
-        if self._previous_response is None:
+        if not self.history:
             raise RuntimeError("previous_response should be called following a http request")
-        return self._previous_response
+        return self.history[-1].response
 
     def __call__(
         self,
@@ -42,17 +44,18 @@ class PageChecker:
             base_url = self._base_url
         if isinstance(base_url, str):
             base_url = URL(base_url)
-
-        response = self._http_client.request(
+        url = base_url.copy_with(raw_path=path.encode("ascii"))
+        title = title or f"{url}-{secrets.token_hex(5)}"
+        request = self._http_client.build_request(
             method=method,
-            url=base_url.copy_with(raw_path=path.encode("ascii")),
+            url=url,
             data=data,
             headers=headers,
             cookies=cookies,
-            follow_redirects=follow_redirects,
             **kwargs,
         )
-        self._previous_response = response
+        response = self._http_client.send(request=request, follow_redirects=follow_redirects)
+        self.history.append(RecordData(title=title, request=request, response=response))
 
         assertion_data = AssertionData.create(response=response, http_client=self._http_client, title=title)
         if should_find:

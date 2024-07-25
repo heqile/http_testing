@@ -40,7 +40,7 @@ class AssertionData:
     response: Optional[Response] = None  # used to generate log file
 
     @staticmethod
-    def create(title: Optional[str], http_client: Client, response: Response) -> AssertionData:
+    def create(title: str, http_client: Client, response: Response) -> AssertionData:
         # same cookie name can be on different sites, so use dict to group cookies list by name
         all_cookies = defaultdict(list)
         for cookie in http_client.cookies.jar:
