@@ -1,8 +1,8 @@
 # Changelog
-## 0.8.0 (Unreleased)
+## 0.8.0
 - chore: update dependencies
 - feat: improve assert report
-- feat: add attribute history on PageChecker
+- feat: add history on PageChecker
 
 ## 0.7.0
 - feat: possible to pass string when check content
