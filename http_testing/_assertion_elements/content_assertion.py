@@ -4,11 +4,10 @@ from typing import Sequence, Union
 from http_testing.validators import Regex, Text, Validator
 
 from .assert_element_checker_base import AssertElementCheckerBase
-from .assertion_attribute_base import AssertionAttributeBase
 from .assertion_data import AssertionData
 
 
-class _ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Union[str, Validator]]]]):
+class ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Union[str, Validator]]]]):
     """
     Check the response's content.
     If the given expected value is `str`, first convert it to `validators.Text` validator.
@@ -31,16 +30,11 @@ class _ContentChecker(AssertElementCheckerBase[Union[str, Validator, Sequence[Un
             else:
                 validator = expected
 
-            if (not validator.validate(text=assertion_data.response_text)) ^ assertion_data.negative_assertion:
+            if (not validator.validate(text=assertion_data.response_text)) ^ self.negative_assertion:
                 self.assert_fail_description = self._make_message(
                     info=f"'{validator}'",
                     check_type="content",
                     url=str(assertion_data.url),
-                    negative=assertion_data.negative_assertion,
                 )
                 return False
         return True
-
-
-class ContentAssertion(AssertionAttributeBase):
-    _checker_type = _ContentChecker

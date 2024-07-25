@@ -1,10 +1,9 @@
-import json
-from tempfile import NamedTemporaryFile
 from typing import Any, Dict, Optional, Union
 
 from attrs import define
 from httpx import URL, Client, Response
 
+from http_testing._assertion_elements.assertion_data import AssertionData
 from http_testing.assertions import Assertions, NegativeAssertions
 
 
@@ -55,23 +54,8 @@ class PageChecker:
         )
         self._previous_response = response
 
+        assertion_data = AssertionData.create(response=response, http_client=self._http_client, title=title)
         if should_find:
-            should_find.check_assertions(http_client=self._http_client, response=response)
+            should_find.check(assertion_data=assertion_data)
         if should_not_find:
-            should_not_find.check_assertions(http_client=self._http_client, response=response)
-
-    @staticmethod
-    def _dump_response(response: Response) -> str:
-        """
-        Save the response's essential contents into a temporay file
-        Return the file name
-        """
-        result: Dict[str, Any] = {
-            "status_code": response.status_code,
-            "content": response.text,
-            "headers": dict(response.headers),
-            "cookies": dict(response.cookies),
-        }
-        with NamedTemporaryFile(mode="wt", delete=False) as f:
-            json.dump(obj=result, fp=f, indent=4)
-            return f.name
+            should_not_find.check(assertion_data=assertion_data)

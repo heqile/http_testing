@@ -4,22 +4,20 @@ from http_testing.cookie import Cookie
 from http_testing.validators import Text, Validator
 
 from .assert_element_checker_base import AssertElementCheckerBase
-from .assertion_attribute_base import AssertionAttributeBase
 from .assertion_data import AssertionData, HttpClientCookie
 
 
-class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
+class CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
     def __contains__(self, assertion_data: AssertionData) -> bool:
         if self.value is None:
             return True
         for cookie in self.value:
             is_cookie_exist = self._is_cookie_match(target_cookie=cookie, all_cookies=assertion_data.all_cookies)
-            if (not is_cookie_exist) ^ assertion_data.negative_assertion:
+            if (not is_cookie_exist) ^ self.negative_assertion:
                 self.assert_fail_description = self._make_message(
                     info=f"'{cookie.name}':'{cookie.value}'",
                     check_type="cookies",
                     url=str(assertion_data.url),
-                    negative=assertion_data.negative_assertion,
                 )
                 return False
         return True
@@ -52,7 +50,3 @@ class _CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
             if validator.validate(cookie.value):
                 return True
         return False
-
-
-class CookiesAssertion(AssertionAttributeBase):
-    _checker_type = _CookiesChecker

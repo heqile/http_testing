@@ -1,23 +1,18 @@
 from abc import ABC
-from typing import Mapping, Optional, Sequence, Union
+from typing import ClassVar, Mapping, Optional, Sequence, Union
 
-from httpx import Client, Response
-
-from http_testing._assertion_elements.assertion_attribute_base import AssertionAttributeBase
+from http_testing._assertion_elements.assert_element_checker_base import AssertElementCheckerBase
 from http_testing._assertion_elements.assertion_data import AssertionData
-from http_testing._assertion_elements.content_assertion import ContentAssertion
-from http_testing._assertion_elements.cookies_assertion import Cookie, CookiesAssertion
-from http_testing._assertion_elements.headers_assertion import HeadersAssertion
-from http_testing._assertion_elements.status_code_assertion import StatusCodeAssertion
+from http_testing._assertion_elements.content_assertion import ContentChecker
+from http_testing._assertion_elements.cookies_assertion import Cookie, CookiesChecker
+from http_testing._assertion_elements.headers_assertion import HeadersChecker
+from http_testing._assertion_elements.status_code_assertion import StatusCodeChecker
 from http_testing.validators import Validator
 
 
 class _AssertionsBase(ABC):
-    _negative: bool = False
-    status_code = StatusCodeAssertion()
-    content = ContentAssertion()
-    headers = HeadersAssertion()
-    cookies = CookiesAssertion()
+    _negative_assertion: ClassVar[bool]
+    _assert_checkers: Sequence[AssertElementCheckerBase]
 
     def __init__(
         self,
@@ -26,20 +21,21 @@ class _AssertionsBase(ABC):
         headers: Optional[Mapping[str, str]] = None,
         cookies: Optional[Sequence[Cookie]] = None,
     ):
-        self.status_code = status_code
-        self.content = content
-        self.headers = headers
-        self.cookies = cookies
+        self._assert_checkers = [
+            StatusCodeChecker(value=status_code, negative_assertion=self._negative_assertion),
+            ContentChecker(value=content, negative_assertion=self._negative_assertion),
+            HeadersChecker(value=headers, negative_assertion=self._negative_assertion),
+            CookiesChecker(value=cookies, negative_assertion=self._negative_assertion),
+        ]
 
-    def check_assertions(self, http_client: Client, response: Response) -> None:
-        assertion_data = AssertionData.create(response=response, http_client=http_client, negative=self._negative)
-        for checker in AssertionAttributeBase.checkers[self]:
+    def check(self, assertion_data: AssertionData) -> None:
+        for checker in self._assert_checkers:
             assert assertion_data in checker
 
 
 class Assertions(_AssertionsBase):
-    _negative: bool = False
+    _negative_assertion: ClassVar[bool] = False
 
 
 class NegativeAssertions(_AssertionsBase):
-    _negative: bool = True
+    _negative_assertion: ClassVar[bool] = True

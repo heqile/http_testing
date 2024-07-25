@@ -3,11 +3,10 @@ from typing import Mapping, Union
 from http_testing.validators import Text, Validator
 
 from .assert_element_checker_base import AssertElementCheckerBase
-from .assertion_attribute_base import AssertionAttributeBase
 from .assertion_data import AssertionData
 
 
-class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator]]]):
+class HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator]]]):
     def __contains__(self, assertion_data: AssertionData) -> bool:
         """
         Check the response's header.
@@ -25,16 +24,11 @@ class _HeadersChecker(AssertElementCheckerBase[Mapping[str, Union[str, Validator
             is_header_not_found = header_key not in assertion_data.response_headers or not validator.validate(
                 assertion_data.response_headers[header_key]
             )
-            if is_header_not_found ^ assertion_data.negative_assertion:
+            if is_header_not_found ^ self.negative_assertion:
                 self.assert_fail_description = self._make_message(
                     info=f"'{header_key}':'{expected_header_value}'",
                     check_type="headers",
                     url=str(assertion_data.url),
-                    negative=assertion_data.negative_assertion,
                 )
                 return False
         return True
-
-
-class HeadersAssertion(AssertionAttributeBase):
-    _checker_type = _HeadersChecker

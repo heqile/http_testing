@@ -37,5 +37,4 @@ def fake_assertion_data():
         response_status_code=200,
         response_headers={},
         response_text="from test",
-        negative_assertion=False,
     )
