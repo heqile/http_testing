@@ -67,7 +67,7 @@ def test_scenario_one(check: PageChecker):
 
 ### Run test
 ```bash
-$ pytest test --tb=no --no-header -v  # traceback is disabled because it is not very useful to anayse the functional error
+$ pytest test --tb=short --no-header -v
 ============= test session starts =============
 collected 1 item
 
@@ -78,17 +78,26 @@ test/test_example.py::test_scenario_one PASSED
 ```
 
 ### Debug
-In case of error, a temporary file will be generated, as shown in the `short test summary info`. It is a json file concluding
+In case of error, a temporary file will be generated. It is a json file concluding
 response content, status code, headers and cookies.
 ```bash
-$ pytest test --tb=no --no-header -v
+$ pytest test --tb=short --no-header -v
 ============= test session starts =============
 collected 1 item
 
 test/test_example.py::test_scenario_one FAILED
-
+============= FAILURES =============
+________ test_scenario_one _________
+test/test_example.py:10: in test_scenario_one
+    check(
+http_testing/page_checker.py:62: in __call__
+    should_find.check(assertion_data=assertion_data)
+http_testing/assertions.py:33: in check
+    assert assertion_data in checker
+E   AssertionError: assert in check 'Senario One' - '<title>groot</title>' should found in content on page 'https://www.google.com/'
+E         - please check file '/tmp/tmp3lp0d7oh'
 ============= short test summary info =============
-FAILED test/test_example.py::test_scenario_one - AssertionError: Scenario One - 'Content-Typessss':'text/html; charset=ISO-8859-1' not found in headers on page 'https://www.google.com/' - please check file '/tmp/tmptaowd2u5'
+FAILED test/test_example.py::test_scenario_one - AssertionError: assert in check 'Senario One' - '<title>groot</title>' should found in content on page 'https://www.google.com/'
 ============= 1 failed in 1.22s =============
 
 ```

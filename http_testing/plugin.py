@@ -40,7 +40,7 @@ def pytest_assertrepr_compare(config, op, left, right):
         if left.response:
             file_name = _dump_response(title=title, response=left.response)
             msg = f"    - please check file '{file_name}'"
-        return [f"in check '{title}'", right.assert_fail_description, msg]
+        return [f"in check '{title}' - {right.assert_fail_description}", msg]
     return None
 
 
