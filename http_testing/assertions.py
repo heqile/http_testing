@@ -18,7 +18,7 @@ class _AssertionsBase(ABC):
         self,
         status_code: Optional[int] = None,
         content: Union[None, str, Validator, Sequence[Union[str, Validator]]] = None,
-        headers: Optional[Mapping[str, str]] = None,
+        headers: Optional[Mapping[str, Union[str, Validator]]] = None,
         cookies: Optional[Sequence[Cookie]] = None,
     ):
         self._assert_checkers = [
