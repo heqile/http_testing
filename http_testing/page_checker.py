@@ -57,7 +57,7 @@ class PageChecker:
         response = self._http_client.send(request=request, follow_redirects=follow_redirects)
         self.history.append(RecordData(title=title, request=request, response=response))
 
-        assertion_data = AssertionData.create(response=response, http_client=self._http_client, title=title)
+        assertion_data = AssertionData.create(response=response, title=title)
         if should_find:
             should_find.check(assertion_data=assertion_data)
         if should_not_find:

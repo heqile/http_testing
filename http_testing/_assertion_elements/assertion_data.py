@@ -5,7 +5,7 @@ from http.cookiejar import Cookie as HttpCookie
 from typing import Mapping, Optional, Sequence, Union
 
 from attrs import frozen
-from httpx import URL, Client, Response
+from httpx import URL, Response
 
 
 @frozen(kw_only=True)
@@ -40,11 +40,8 @@ class AssertionData:
     response: Optional[Response] = None  # used to generate log file
 
     @staticmethod
-    def create(title: str, http_client: Client, response: Response) -> AssertionData:
-        # same cookie name can be on different sites, so use dict to group cookies list by name
+    def create(title: str, response: Response) -> AssertionData:
         all_cookies = defaultdict(list)
-        for cookie in http_client.cookies.jar:
-            all_cookies[cookie.name].append(HttpClientCookie.create(cookie))
         for cookie in response.cookies.jar:
             all_cookies[cookie.name].append(HttpClientCookie.create(cookie))
         return AssertionData(
