@@ -13,7 +13,7 @@ from http_testing.assertions import Assertions, NegativeAssertions
 class PageChecker:
     _base_url: Union[URL, str]
     _http_client: Client
-    history: List[RecordData] = field(factory=list)
+    history: List[RecordData] = field(factory=list, init=False)
 
     @property
     def previous_response(self) -> Response:
