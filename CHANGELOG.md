@@ -1,4 +1,8 @@
 # Changelog
+## 0.9.0
+- BREAKING CHANGE: cookie check only based on current response
+- BREAKING CHANGE: change Cookie class's 'expires' attribute type
+
 ## 0.8.0
 - chore: update dependencies
 - feat: improve assert report

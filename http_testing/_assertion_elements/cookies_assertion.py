@@ -39,7 +39,7 @@ class CookiesChecker(AssertElementCheckerBase[Sequence[Cookie]]):
             if (
                 target_cookie.expires is not None
                 and cookie.expires is not None
-                and target_cookie.expires != cookie.expires
+                and int(target_cookie.expires.timestamp()) != cookie.expires
             ):
                 continue
             validator: Validator

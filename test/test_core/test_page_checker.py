@@ -1,4 +1,5 @@
 from contextlib import AbstractContextManager, nullcontext
+from datetime import datetime, timezone
 from typing import Any, Dict, Sequence
 
 import pytest
@@ -7,7 +8,7 @@ from respx import MockRouter, SetCookie
 
 from http_testing import Assertions, Cookie, NegativeAssertions, PageChecker, Regex, Text
 
-pytestmark = [pytest.mark.respx(base_url="http://localhost")]
+pytestmark = [pytest.mark.respx(base_url="http://foo.bar")]
 
 
 @pytest.fixture
@@ -34,7 +35,7 @@ def test_page_checker_assert_status(
     respx_mock: MockRouter,
 ):
     respx_mock.get("/test_page.html").respond(status_code=response_status_code)
-    check = PageChecker(base_url="http://localhost", http_client=http_client)
+    check = PageChecker(base_url="http://foo.bar", http_client=http_client)
     kwargs: Dict[str, Any] = {}
     if not is_negative:
         kwargs["should_find"] = Assertions(status_code=expected_status_code)
@@ -148,7 +149,7 @@ def test_page_checker_assert_headers(
     respx_mock: MockRouter,
 ):
     respx_mock.get("/test_page.html").respond(headers=response_headers)
-    check = PageChecker(base_url="http://localhost", http_client=http_client)
+    check = PageChecker(base_url="http://foo.bar", http_client=http_client)
     kwargs: Dict[str, Any] = {}
     if not is_negative:
         kwargs["should_find"] = Assertions(headers=expected_headers)
@@ -189,6 +190,31 @@ def test_page_checker_assert_headers(
             id="should_not_raise_if_should_find_is_ok_with_text_value",
         ),
         pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            False,
+            False,
+            id="should_not_raise_if_should_find_is_ok_with_full_cookie_attributes",
+        ),
+        pytest.param(
             {"cookie_one": "cool"},
             [Cookie(name="cookie_one", value="ooops")],
             False,
@@ -208,6 +234,106 @@ def test_page_checker_assert_headers(
             False,
             True,
             id="should_raise_if_should_find_is_ko_with_text_value",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/dot",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            False,
+            True,
+            id="should_raise_if_should_find_is_ko_with_full_cookie_attributes_path_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".ft",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            False,
+            True,
+            id="should_raise_if_should_find_is_ko_with_full_cookie_attributes_domain_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=False,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            False,
+            True,
+            id="should_raise_if_should_find_is_ko_with_full_cookie_attributes_secure_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 5, 1, 1, 1, 1, tzinfo=timezone.utc),
+                )
+            ],
+            False,
+            True,
+            id="should_raise_if_should_find_is_ko_with_full_cookie_attributes_expire_not_match",
         ),
         pytest.param(
             {"cookie_one": "cool"},
@@ -231,6 +357,106 @@ def test_page_checker_assert_headers(
             id="should_not_raise_if_should_not_find_is_ok_with_text_value",
         ),
         pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/dot",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            True,
+            False,
+            id="should_not_raise_if_should_not_find_is_ok_with_full_cookie_attributes_path_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".ft",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            True,
+            False,
+            id="should_not_raise_if_should_not_find_is_ok_with_full_cookie_attributes_domain_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=False,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            True,
+            False,
+            id="should_not_raise_if_should_not_find_is_ok_with_full_cookie_attributes_secure_not_match",
+        ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 5, 1, 1, 1, 1, tzinfo=timezone.utc),
+                )
+            ],
+            True,
+            False,
+            id="should_not_raise_if_should_not_find_is_ok_with_full_cookie_attributes_expire_not_match",
+        ),
+        pytest.param(
             {"cookie_one": "cool"},
             [Cookie(name="cookie_one", value="cool")],
             True,
@@ -251,6 +477,31 @@ def test_page_checker_assert_headers(
             True,
             id="should_raise_if_should_not_find_is_ko_with_text_value",
         ),
+        pytest.param(
+            [
+                SetCookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            [
+                Cookie(
+                    name="cookie_one",
+                    value="cool",
+                    path="/",
+                    domain=".foo.bar",
+                    secure=True,
+                    expires=datetime(2024, 10, 11, 12, 13, 14, tzinfo=timezone.utc),
+                )
+            ],
+            True,
+            True,
+            id="should_raise_if_should_not_find_is_ko_with_full_cookie_attributes",
+        ),
     ],
 )
 def test_page_checker_assert_cookies(
@@ -262,7 +513,7 @@ def test_page_checker_assert_cookies(
     respx_mock: MockRouter,
 ):
     respx_mock.get("/test_page.html").respond(cookies=response_cookies)
-    check = PageChecker(base_url="http://localhost", http_client=http_client)
+    check = PageChecker(base_url="http://foo.bar", http_client=http_client)
     kwargs: Dict[str, Any] = {}
     if not is_negative:
         kwargs["should_find"] = Assertions(cookies=expected_cookies)
@@ -404,7 +655,7 @@ def test_page_checker_assert_content(
     respx_mock: MockRouter,
 ):
     respx_mock.get("/test_page.html").respond(content=response_content)
-    check = PageChecker(base_url="http://localhost", http_client=http_client)
+    check = PageChecker(base_url="http://foo.bar", http_client=http_client)
     kwargs: Dict[str, Any] = {}
     if not is_negative:
         kwargs["should_find"] = Assertions(content=expected_content)
