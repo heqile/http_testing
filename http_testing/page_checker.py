@@ -1,5 +1,5 @@
 import secrets
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Mapping, Optional, Union
 
 from attrs import define, field
 from httpx import URL, Client, Response
@@ -28,7 +28,10 @@ class PageChecker:
         title: Optional[str] = None,
         base_url: Union[URL, str, None] = None,
         method: str = "GET",
+        params: Optional[Mapping[str, Any]] = None,
         data: Optional[Dict[str, Any]] = None,
+        content: Union[str, bytes, None] = None,
+        json: Optional[Any] = None,
         headers: Optional[Dict[str, str]] = None,
         cookies: Optional[Dict[str, str]] = None,
         follow_redirects: bool = False,
@@ -52,6 +55,9 @@ class PageChecker:
             data=data,
             headers=headers,
             cookies=cookies,
+            params=params,
+            content=content,
+            json=json,
             **kwargs,
         )
         response = self._http_client.send(request=request, follow_redirects=follow_redirects)
