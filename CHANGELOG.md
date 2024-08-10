@@ -2,6 +2,8 @@
 ## 0.9.0
 - BREAKING CHANGE: cookie check only based on current response
 - BREAKING CHANGE: change Cookie class's 'expires' attribute type
+- feat: make checker interface compliant with httpx
+- chore: fix some typings
 
 ## 0.8.0
 - chore: update dependencies
