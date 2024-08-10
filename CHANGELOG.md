@@ -3,6 +3,7 @@
 - BREAKING CHANGE: cookie check only based on current response
 - BREAKING CHANGE: change Cookie class's 'expires' attribute type
 - feat: make checker interface compliant with httpx
+- feat: add 'history' attribute on PageChecker
 - chore: fix some typings
 
 ## 0.8.0
