@@ -1,4 +1,8 @@
 # Changelog
+## 0.10.0
+- chore: migrate to pdm
+- chore: update dependencies
+
 ## 0.9.0
 - BREAKING CHANGE: cookie check only based on current response
 - BREAKING CHANGE: change Cookie class's 'expires' attribute type
