@@ -2,6 +2,7 @@ from contextlib import AbstractContextManager, nullcontext
 from datetime import datetime, timezone
 from typing import Any, Dict, Sequence
 
+import freezegun
 import pytest
 from httpx import Client
 from respx import MockRouter, SetCookie
@@ -165,6 +166,7 @@ def test_page_checker_assert_headers(
         check(path="/test_page.html", title="from_unit_test", **kwargs)
 
 
+@freezegun.freeze_time(datetime(2024, 10, 10, tzinfo=timezone.utc))
 @pytest.mark.parametrize(
     ["response_cookies", "expected_cookies", "is_negative", "should_raise"],
     [
