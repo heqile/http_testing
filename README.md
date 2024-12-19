@@ -1,7 +1,7 @@
 # HTTP_TESTING
 
 <a href="https://github.com/heqile/http_testing/actions?query=branch%3Amain+event%3Apush+" target="_blank">
-    <img src="https://github.com/heqile/http_testing/workflows/Test/badge.svg?event=push&branch=main" alt="Test">
+    <img src="https://github.com/heqile/http_testing/workflows/Test/badge.svg?query=branch%3Amain+event%3Apush" alt="Test">
 </a>
 <a href="https://pypi.org/project/pytest-httptesting" target="_blank">
     <img src="https://img.shields.io/pypi/v/pytest-httptesting?color=%2334D058&label=pypi%20package" alt="Package version">
