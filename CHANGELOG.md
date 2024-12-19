@@ -2,7 +2,6 @@
 ## 0.10.0
 - chore: migrate to pdm
 - chore: update dependencies
-- remove: drop python3.8 support
 
 ## 0.9.0
 - BREAKING CHANGE: cookie check only based on current response
