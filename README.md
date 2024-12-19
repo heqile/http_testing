@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/pypi/v/pytest-httptesting?color=%2334D058&label=pypi%20package" alt="Package version">
 </a>
 <a href="https://pypi.org/project/pytest-httptesting" target="_blank">
-    <img src="https://img.shields.io/pypi/pyversions/pytest-httptesting.svg?color=%2334D058" alt="Supported Python versions">
+    <img src="https://img.shields.io/python/required-version-toml?tomlFilePath=https%3A%2F%2Fraw.githubusercontent.com%2Fheqile%2Fhttp_testing%2Fmain%2Fpyproject.toml" alt="Supported Python versions">
 </a>
 
 ## Description
